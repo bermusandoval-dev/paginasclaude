@@ -1,0 +1,16 @@
+# Artefactos generados (deterministas: `python catalogo.py` los reproduce igual)
+catalogo.json
+catalogo_maestro.csv
+catalogo_maestro.xlsx
+_catalogo_pre_*.json
+
+# Salida de imagenes / PDFs (fases posteriores)
+hf/
+pdf/
+svg_out/
+lote_jobs.txt
+
+# Python
+__pycache__/
+*.pyc
+.venv/
