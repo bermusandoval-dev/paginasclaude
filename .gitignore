@@ -10,6 +10,10 @@ pdf/
 svg_out/
 lote_jobs.txt
 
+# QA temporal (render_qa.py)
+qa_*.png
+qa_*.svg
+
 # Python
 __pycache__/
 *.pyc

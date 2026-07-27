@@ -486,7 +486,7 @@ def build_mesa_madera(d, vkey):
         angulos.append(f"Hairpin rods splay {round(90 - a,1)} deg from vertical")
         detalle = {"titulo": "Hairpin weld + plate", "desc": "Two rods welded to a drilled plate; plate bolts up into the wood top."}
     elif vkey == "straight_bolted":
-        P_.append(pieza("A", "Straight legs", 4, frame_h, ls, f"square tube {ls}x{ls}x2 mm", "square tube, welded top plate drilled for the top"))
+        P_.append(pieza("A", "Straight legs", 4, frame_h, ls, f"square tube {ls}x{ls}x2 mm", "square tube, bolt-on top plate drilled for the top"))
         P_.append(pieza("B", "Aprons long", 2, L - 2 * ls - 80, ls, f"square tube {ls}x{ls}x2 mm", "square tube, bolted to the legs"))
         P_.append(pieza("C", "Aprons short", 2, P - 2 * ls - 80, ls, f"square tube {ls}x{ls}x2 mm", "square tube, bolted to the legs"))
         angulos.append("Legs vertical (90 deg)")
@@ -562,6 +562,8 @@ def build_parrilla(d, vkey):
     P_, posiciones, angulos = [], [], []
     detalle = {"titulo": "Seam detail", "desc": ""}
     tabletop = (sh == 0)
+    weld = VAR_PARRILLA[vkey]["weld"]
+    joinw = "welded" if weld else "bolted"
 
     # firebox
     if vkey in ("folded_box", "riveted"):
@@ -577,9 +579,9 @@ def build_parrilla(d, vkey):
 
     # grate bars
     ref = "E" if vkey in ("welded_angle", "brazier", "wheeled") else "B"
-    P_.append(pieza(ref, "Grate bars", nb, W - 40, 10, "round rod 10 mm", "round rod, grate bar in a welded frame"))
+    P_.append(pieza(ref, "Grate bars", nb, W - 40, 10, "round rod 10 mm", f"round rod, grate bar in a {joinw} frame"))
     grate_frame_ref = chr(ord(ref) + 1)
-    P_.append(pieza(grate_frame_ref, "Grate frame", 1, 2 * (W - 40) + 2 * (P - 40), 20, "square bar 10 mm", "square bar, frame the grate bars into"))
+    P_.append(pieza(grate_frame_ref, "Grate frame", 1, 2 * (W - 40) + 2 * (P - 40), 20, "square bar 10 mm", f"square bar, {joinw} grate frame"))
 
     # legs / stand
     if not tabletop:
@@ -588,7 +590,7 @@ def build_parrilla(d, vkey):
             P_.append(pieza(leg_ref, "Stand legs", 4, sh, 30, "square tube 30x30x2 mm", "square tube, 2 legs take an axle for wheels"))
             P_.append(pieza(chr(ord(leg_ref) + 1), "Axle", 1, W + 60, 16, "round bar 16 mm", "round bar, wheels on each end"))
         else:
-            P_.append(pieza(leg_ref, "Stand legs", 4, sh, 30, "square tube 30x30x2 mm", "square tube, welded/bolted under the box"))
+            P_.append(pieza(leg_ref, "Stand legs", 4, sh, 30, "square tube 30x30x2 mm", f"square tube, {joinw} under the box"))
         P_.append(pieza(chr(ord(leg_ref) + (2 if vkey == "wheeled" else 1)), "Stand cross rails", 2, W - 60, 25, "square tube 25x25x2 mm", "square tube, ties the legs"))
         posiciones.append(f"Firebox rim {sh + bd} mm above the floor; grate {sh + bd - 30} mm")
     else:

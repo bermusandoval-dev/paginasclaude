@@ -1,0 +1,6 @@
+# MetalMaster — dependencias de la fase 2 (render SVG->PDF).
+# El motor de datos (fase 1) usa solo la stdlib.
+cairosvg>=2.7
+pypdf>=4.0
+# Opcional: export .xlsx en exportar.py
+openpyxl>=3.1
