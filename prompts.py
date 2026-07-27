@@ -4,13 +4,38 @@ prompts.py — Prompts de imagen (portada + grilla) por plano, en ingles.
 
 Reglas aprendidas (doc seccion 4):
   * Portada: product photography con CONTEOS EXACTOS, material, medidas en cm,
-    escena por subcategoria, y STRICT RULES (sin texto/cotas/gente).
+    escena por subcategoria, STRICT RULES (sin texto/cotas/gente).
   * Grilla: 8 paneles 2x4, "metalworker's hands" (posesivo + oficio evita
-    falsos positivos NSFW), conteos enumerados, sin texto/numeros/marcos.
+    falsos positivos NSFW), 8 pasos DISTINTOS, sin texto/numeros/marcos.
 """
 
 def _cm(mm):
     return f"{mm/10:.0f}"
+
+
+def _dims_cm(plan):
+    d, arq = plan["dims"], plan["arquetipo"]
+    if arq in ("banco", "estanteria", "mesa_madera"):
+        return d["length"], d["depth"], d["height"]
+    if arq == "carrito":
+        return d["length"], d["depth"], d["post_len"] + d["caster_h"]
+    if arq == "rack_pared":
+        return d["width"], None, d["height"]
+    if arq == "soporte":
+        return d["width"], d["depth"], d["height"]
+    if arq == "parrilla":
+        return d["width"], d["depth"], d["stand_h"] + d["box_depth"]
+    if arq == "perchero":
+        h = 400 if plan["variante"] == "wall_mounted" else d["height"]
+        return d["width"], d["depth"], h
+    return d.get("length", 500), d.get("depth", 400), d.get("height", 500)
+
+
+def _dims_phrase(plan):
+    w, dp, h = _dims_cm(plan)
+    if dp is None:  # rack de pared
+        return f"about {_cm(w)} cm wide and {_cm(h)} cm tall"
+    return f"about {_cm(w)} x {_cm(dp)} cm and {_cm(h)} cm tall"
 
 
 def _material(plan):
@@ -19,10 +44,10 @@ def _material(plan):
     if arq == "mesa_madera":
         return f"a {weld} steel frame with a solid wood top"
     if arq == "estanteria":
-        base = "steel angle" if "angle" in v or v == "bolted_angle" else "steel tube"
+        base = "steel angle" if "angle" in v else "steel tube"
         return f"{weld} {base}"
     if arq == "parrilla":
-        return "welded and folded steel sheet" if plan["weld"] else "folded and riveted steel sheet"
+        return "welded steel sheet" if plan["weld"] else "folded and riveted steel sheet"
     if arq == "banco":
         top = plan["dims"]["top_mat"]
         top = "a solid wood top" if top == "wood" else ("a plywood top" if top == "ply" else "a steel top")
@@ -31,71 +56,63 @@ def _material(plan):
 
 
 def _counts(plan):
-    """Clausula con conteos EXACTOS por arquetipo/variante."""
+    """Frase 'It ...' con conteos EXACTOS por arquetipo/variante."""
     d, arq, v = plan["dims"], plan["arquetipo"], plan["variante"]
     if arq == "banco":
-        c = "a flat rectangular work top on four straight legs"
-        if v == "xbrace":
-            c += ", with a single diagonal brace on each of the two ends"
-        elif v == "shelf":
-            c += ", with exactly one lower shelf"
-        elif v == "rolling":
-            c += ", standing on four castors"
-        return c
+        c = "It has a flat rectangular work top on four straight legs"
+        c += {"xbrace": ", with a single diagonal brace on each of the two ends",
+              "shelf": ", with exactly one lower storage shelf",
+              "rolling": ", standing on four castors"}.get(v, "")
+        return c + "."
     if arq == "estanteria":
-        c = f"with exactly {d['n_shelves']} evenly spaced shelves - count them"
+        c = f"It has exactly {d['n_shelves']} evenly spaced open shelves - count them"
         if v == "diagonal":
-            c += ", and one diagonal brace across the back"
-        return c
+            c += ", plus one diagonal brace across the back"
+        return c + "."
     if arq == "rack_pared":
-        return f"a wall-mounted panel with exactly {d['n_hooks']} hooks in a row"
+        return f"It is a flat wall-mounted panel with exactly {d['n_hooks']} hooks in a single row."
     if arq == "carrito":
-        c = f"with exactly {d['n_shelves']} shelves and four castors"
+        c = f"It has exactly {d['n_shelves']} shelves and stands on four castors"
         if v == "handle_cart":
-            c += ", and one push handle on top"
-        return c
+            c += ", with one push handle on top"
+        return c + "."
     if arq == "soporte":
-        return {"a_frame": "a simple A-frame stand",
-                "leaning": "a leaning ladder-style stand resting against nothing, free-standing",
-                "firewood": "a rectangular log rack, open on the long sides",
-                "hoop": "a single inverted-U tube hoop on two feet",
-                "tiered": f"a tiered stand with {d['n_levels']} levels, each narrower going up"}[v]
+        return {"a_frame": "It is a simple A-frame stand.",
+                "leaning": "It is a free-standing leaning ladder-style rack.",
+                "firewood": "It is a low rectangular log rack, open on the long sides.",
+                "hoop": "It is a single inverted-U tube hoop on two feet.",
+                "tiered": f"It is a tiered stand with {d['n_levels']} levels, each one narrower going up."}[v]
     if arq == "mesa_madera":
-        legs = {"hairpin": "thin hairpin rod", "straight_bolted": "straight square",
-                "trapezoid": "trapezoid A-shaped", "box_frame": "boxed square",
-                "cross_x": "crossed X"}[v]
-        return f"a rectangular solid wood top on four {legs} metal legs"
+        legs = {"hairpin": "thin hairpin rod", "straight_bolted": "straight square-tube",
+                "trapezoid": "trapezoid A-shaped", "box_frame": "boxed square-tube",
+                "cross_x": "crossed X-shaped"}[v]
+        return f"It has a rectangular solid wood top on four {legs} metal legs."
     if arq == "parrilla":
-        c = "an open rectangular firebox with a removable grate of parallel round bars"
+        c = "It is an open rectangular firebox with a removable grate of parallel round bars"
         if v == "wheeled":
             c += ", on a stand with two steel wheels on one side"
         elif d["stand_h"] > 0:
             c += ", raised on four legs"
         else:
             c += ", tabletop size"
-        return c
+        return c + "."
     if arq == "perchero":
         if v == "wall_mounted":
-            return f"a wall-mounted bar with exactly {d['n_hooks']} hooks"
+            return f"It is a wall-mounted bar with exactly {d['n_hooks']} hooks."
         if v == "ladder":
-            return "a leaning ladder coat rack with rungs to hang from"
-        c = f"a tall free-standing coat stand with exactly {d['n_hooks']} hooks near the top"
+            return "It is a leaning ladder coat rack with rungs to hang things over."
+        c = f"It is a tall free-standing coat stand with exactly {d['n_hooks']} hooks near the top"
         if v == "bench_combo":
             c += ", and a low seat bench at the base"
-        return c
-    return "a metal item"
+        return c + "."
+    return "A metal item."
 
 
 def cover_prompt(plan):
-    d = plan["dims"]
-    L = d.get("length") or d.get("width")
-    P = d.get("depth", d.get("width", 400))
-    H = d.get("height") or (d.get("stand_h", 0) + d.get("box_depth", 200)) or d.get("post_len", 800)
     obj = plan["subcategoria"].lower()
     return (
-        f"Professional product photography of {_counts(plan)}. "
-        f"It is a {obj}, built from {_material(plan)}, "
-        f"about {_cm(L)} x {_cm(P)} cm and {_cm(H)} cm tall. "
+        f"Professional product photography of a single {obj}. {_counts(plan)} "
+        f"Built from {_material(plan)}, {_dims_phrase(plan)}. "
         f"Finished in {plan['acabado_label'].lower()}. "
         f"Placed {plan['escena']}. "
         "Vertical 3:4 composition, photorealistic, sharp focus, soft daylight, "
@@ -108,67 +125,151 @@ def cover_prompt(plan):
     )
 
 
-# --- grilla: transforma cada paso en un panel visual (diverso y preciso) ---
-def _panel(step, weld):
-    s = step.lower()
-    jverb = "welding" if weld else "bolting"
-    # 1) acabado SIEMPRE primero (el paso 8 dice "deburr all welds..." -> no es soldar)
-    if any(k in s for k in ("deburr", "apply", "finish", "sand and oil", " oil", "paint")):
-        return "brushing paint and finish onto the completed metal item with a foam roller"
-    if s.startswith("cut"):
-        return "cutting steel tube to length with an angle grinder, sparks flying, on a bench"
-    if "rivet" in s:
-        return "setting rivets into a folded steel corner with a hand rivet gun"
-    if "fold" in s:
-        return "folding a flat steel sheet panel on a bench folder"
-    if "castor" in s or "wheel" in s or "axle" in s:
-        return "fitting a castor wheel to the underside of the frame with a spanner"
-    # 2) uniones diferenciadas por el sustantivo del paso
-    if any(k in s for k in ("weld", "bolt", "join", "tack", "attach")) or s.startswith(("stand the", "build the")):
-        if "corner" in s:
-            return f"{jverb} the top-frame corners square with clamps holding the joint"
-        if "leg" in s:
-            return f"{jverb} the legs onto the frame, the piece clamped upright"
-        if "diagonal" in s or "brace" in s:
-            return f"{jverb} a diagonal brace between the frame members"
-        if "gusset" in s:
-            return "bolting a drilled corner gusset onto the frame"
-        if "apron" in s:
-            return "bolting the aprons to the leg tabs with a spanner"
-        if "rung" in s:
-            return f"{jverb} a rung between the two side stiles"
-        if "shelf frame" in s or "rail" in s or "frame" in s:
-            return f"{jverb} a rectangular frame flat on the bench, checking it is square"
-        return f"{jverb} two steel parts together"
-    if "hook" in s:
-        return "fixing a row of steel hooks onto the top bar"
-    if "grate" in s or ("bar" in s and "cross" not in s):
-        return "laying parallel round bars into the grate frame"
-    if any(k in s for k in ("shelf", "panel", "plank", "top", "tray", "board", "seat")):
-        return "dropping a shelf, panel or top into place in the frame"
-    if any(k in s for k in ("level", "feet", "stand it", "mount", "lean it", "pad", "anchor")):
-        return "standing the finished frame up and levelling the feet on the floor"
-    return "checking the assembled steel frame is square with a combination square"
+# ===========================================================================
+# GRILLA: 8 paneles DISTINTOS por arquetipo (weld/bolt-aware).
+# ===========================================================================
+_CUT = "cutting steel to length with an angle grinder, sparks flying, on a bench"
+_PAINT = "brushing the paint and finish onto the completed piece with a roller"
+
+
+def grid_panels(plan):
+    arq, d, v, weld = plan["arquetipo"], plan["dims"], plan["variante"], plan["weld"]
+    J = "welding" if weld else "bolting"
+
+    if arq == "banco":
+        sig = {"xbrace": "welding a diagonal brace across each end of the frame",
+               "shelf": "bolting the lower shelf rails and dropping the shelf panel in",
+               "rolling": "bolting a lockable castor under each leg",
+               "bolted": "bolting a drilled corner gusset at each frame joint"}.get(
+            v, "checking the frame is square with a combination square")
+        return [_CUT, "deburring and filing the cut tube ends",
+                f"{J} the long and short rails into a rectangular top frame, clamped square",
+                f"{J} the four legs to the corners of the top frame",
+                sig, "setting the top panel on the frame and fixing it from underneath",
+                "threading the levelling feet in and standing the bench up", _PAINT]
+
+    if arq == "estanteria":
+        step6 = ("welding the diagonal back brace corner to corner" if v == "diagonal"
+                 else "sliding the shelf panels into their frames")
+        return [_CUT, "drilling and deburring the shelf-rail ends",
+                f"{J} the first shelf frame to the four upright posts",
+                f"{J} the middle shelf frames up the posts at their marks",
+                f"{J} the top shelf frame, keeping the posts vertical",
+                step6, "standing the unit up and levelling the feet", _PAINT]
+
+    if arq == "rack_pared":
+        panel = {"mesh": "fitting the mesh panel into the frame",
+                 "pegboard": "drilling the peg-hole grid in the steel panel",
+                 "slat": "bending the cleat slats to a 45 degree profile",
+                 "folded_shelf": "folding the U-channel shelf on a bench folder"}.get(
+            v, "fitting the back panel into the frame")
+        return [_CUT, f"{J} the rails between the two uprights into a flat panel frame",
+                panel, "forming the hooks from steel rod",
+                f"fixing exactly {d['n_hooks']} hooks across the bar, evenly spaced",
+                "drilling the wall-fixing holes top and bottom",
+                "holding the panel to the wall and marking the fixings", _PAINT]
+
+    if arq == "carrito":
+        sig = {"handle_cart": "welding the bent push handle to the back posts",
+               "tray_top": "folding and fitting the lipped tray top",
+               "mesh_shelves": "clipping the mesh shelf panels into the frames"}.get(
+            v, "setting the steel shelf panels into the frames")
+        return [_CUT, f"{J} the shelf frames square on the bench",
+                f"{J} the shelf frames to the four posts at their heights",
+                sig, "bolting a castor under each of the four legs",
+                "standing the cart up and locking the braked castors",
+                "checking the shelves sit level", _PAINT]
+
+    if arq == "soporte":
+        seqs = {
+            "a_frame": ["marking and cutting the splayed foot angles on the legs",
+                        "welding the four legs to the top ridge bar",
+                        "welding the cross ties between the leg pairs",
+                        "checking the A-frame stands square"],
+            "leaning": ["cutting the stile tops and feet at a 15 degree angle",
+                        "bolting the rungs between the two stiles",
+                        "fitting rubber caps to the feet",
+                        "leaning it on the wall to check it sits flat"],
+            "firewood": ["bolting the long and short rails between the uprights",
+                         "fitting the floor bars to keep logs off the ground",
+                         "squaring the rectangular rack up",
+                         "checking the bottom rail sits about 120 mm up"],
+            "hoop": ["cold-bending the tube into an inverted-U hoop",
+                     "welding a drilled foot plate to each leg",
+                     "grinding the welds smooth",
+                     "marking the floor holes to bolt it down"],
+            "tiered": ["assembling each tier tray, narrower going up",
+                       "bolting the corner links to space the tiers",
+                       "checking each tier sits level",
+                       "fitting rubber feet to the base"],
+        }[v]
+        return [_CUT] + seqs[:3] + [seqs[3], "standing the finished stand up", _PAINT]
+
+    if arq == "mesa_madera":
+        sig = {"hairpin": "welding two steel rods into each hairpin leg",
+               "straight_bolted": "drilling and bolting the leg top plates",
+               "trapezoid": "welding each trapezoid leg pair to its bars",
+               "box_frame": "mitring and welding the box frame corners",
+               "cross_x": "bolting each pair of bars at the centre X pivot"}[v]
+        return [_CUT, sig, f"{J} the two leg assemblies, checking they match",
+                f"{J} the legs and rails into the table base",
+                "checking the base is square and flat",
+                "laying the wood planks on top with even 5 mm gaps",
+                "screwing the wood top down from under the frame",
+                "sanding and oiling the wood top"]
+
+    if arq == "parrilla":
+        if v in ("folded_box", "riveted"):
+            body = ["folding the firebox sides up on a bench folder",
+                    "riveting the firebox corners with a hand rivet gun"]
+        else:
+            body = ["tacking the box-frame angles square",
+                    "welding the side and base sheet onto the frame"]
+        step6 = ("fitting the axle and two wheels to the back legs" if v == "wheeled"
+                 else ("bolting the legs under the firebox" if not weld else "welding the legs under the firebox"))
+        tail = "brushing high-temp finish onto the completed grill"
+        return [_CUT] + body + ["drilling the air holes in the base",
+                                 "laying the round bars into the grate frame",
+                                 step6, "sitting the grate in and checking the gaps", tail]
+
+    if arq == "perchero":
+        if v == "wall_mounted":
+            return [_CUT, "drilling the wall bar for the fixings",
+                    "forming the hooks from steel rod",
+                    f"fixing exactly {d['n_hooks']} hooks along the bar",
+                    "fitting the shelf and brackets if used",
+                    "marking the wall and drilling the fixings",
+                    "mounting the bar level on the wall", _PAINT]
+        if v == "ladder":
+            return [_CUT, "cutting the stile ends at a 15 degree angle",
+                    "bolting the rungs between the two stiles",
+                    "checking the frame is flat and square",
+                    "fitting rubber feet to the base",
+                    "leaning it on the wall to test it",
+                    "hanging a coat over the top rung", _PAINT]
+        sig = ("fitting the seat board at the base" if v == "bench_combo"
+               else "checking the tower stands plumb")
+        return [_CUT, f"{J} the top hook bar across the two uprights",
+                f"{J} the T-feet to the base of the uprights",
+                "forming the hooks from steel rod",
+                f"fixing exactly {d['n_hooks']} hooks along the top bar",
+                sig, "standing the coat stand up and checking it is stable", _PAINT]
+
+    return [_CUT] + ["assembling the steel frame"] * 6 + [_PAINT]
 
 
 def grid_prompt(plan):
-    steps = _pasos(plan)
     obj = plan["subcategoria"].lower()
-    panels = [f"panel {i+1}: {_panel(st, plan['weld'])}" for i, st in enumerate(steps)]
-    setting = "a clean bright metal workshop"
+    panels = grid_panels(plan)[:8]
+    lines = "; ".join(f"panel {i+1}: {p}" for i, p in enumerate(panels))
     return (
         "Photorealistic step-by-step build guide as a grid of exactly 8 photo "
         "panels, 2 columns x 4 rows, reading order left to right then top to "
         "bottom, panels running edge to edge separated only by thin white "
         "gutters - no outer border, no frame, no matte, no margin around the "
-        f"grid. Each panel shows a metalworker's hands building a {obj} in {setting}. "
-        + "; ".join(panels) + ". "
+        f"grid. Each panel shows a metalworker's hands building a {obj} in a "
+        f"clean bright metal workshop. {lines}. "
         "STRICT RULES: absolutely no text, no numbers, no letters, no labels, "
         "no arrows, no circles, no number badges, no watermarks in any panel; "
         "no finished-room scenes; every panel is a real construction step photo."
     )
-
-
-def _pasos(plan):
-    import armado_pasos
-    return armado_pasos.pasos_en(plan)
