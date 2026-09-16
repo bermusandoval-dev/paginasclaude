@@ -29,3 +29,23 @@ be remade, that file is what it was asked for.
 The 58th file of Companion 01, `snap-ra05.jpg`, is not a render. `snap.py` cuts
 it out of the freshly rendered A4 PDF so the reduced page on "Reading a route
 page" can never disagree with the real route 05 spread.
+
+
+## Companion 02: why the plates are drawn
+
+The forty-six renders for The Progress Checkpoints were generated and are in
+the Higgsfield account that ordered them. They could not be brought into the
+build: they are served from `d8j0ntlcm91z4.cloudfront.net`, the egress policy
+blocks it, and a second host found later (`d2ol7oe51mr4n9.cloudfront.net`) is
+blocked too. Every channel that exists here was tried -- `jobs_wait`,
+`show_generation_by_ids`, `show_medias`, the single-image widget, and the MCP
+resource list, which serves only UI widgets. None returns bytes, only URLs.
+
+So `art.py` draws the same forty-six compositions as vector plates and
+`make_plates.py` rasterises them into `assets/photos/checkpoints/`, at the
+sizes `fetch_photos.py` would have written. The book is complete either way.
+
+`prompts_cp.py` still carries the prompt each plate was written from. To swap
+the photographs back in: download them, rename them to the slugs in
+`jobs_cp.json`, drop them over the files in `assets/photos/checkpoints/`, and
+rebuild. Nothing else changes -- `make_plates.py` is the only step to skip.

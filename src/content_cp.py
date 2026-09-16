@@ -120,56 +120,69 @@ cross-referencing anything by hand.</p>
 
 
 def p_contents():
-    def row(fn, title, sub):
-        return f'<li><span class="n">{K.pg(fn)}</span><span><b>{title}</b>{sub}</span></li>'
-    arcs = "".join(
-        f'<li><span class="n">{K.pg("ca" + a["key"].lower())}</span>'
-        f'<span><b>{a["short"]}</b>{len(A.checkpoints(a["key"]))} checkpoints &middot; '
-        f'{", ".join(C.measures(a["key"]))}</span></li>' for a in A.ARCS)
+    """The contents, as a table.
+
+    .toc is a table in the stylesheet -- .toc td, .toc .pg, .toc .d. Written as
+    a <ul> it inherited none of that and every line came out as
+    "26Intake3 checkpoints" with nothing between the parts.
+    """
+    def rows(items, cls="toc"):
+        out = []
+        for kind, title, fn, sub in items:
+            if kind == "part":
+                out.append(f'<tr class="part"><td colspan="3">{title}</td></tr>')
+                continue
+            out.append(f'<tr><td>{title}</td><td class="d">{sub}</td>'
+                       f'<td class="pg">{K.pg(fn)}</td></tr>')
+        return f'<table class="{cls}">' + "".join(out) + "</table>"
+
+    left = rows([
+        ("part", "Start here", "", ""),
+        ("", "What this book answers", "p_fits", "and the four things it does not"),
+        ("", "Four months in", "p_problem", "the question this book exists for"),
+        ("", "What a checkpoint is", "p_anatomy", "the five parts of one"),
+        ("part", "Part One &middot; Reading the number", "", ""),
+        ("", "One reading, three ways out", "p_three", "the rule, whole"),
+        ("", "On track", "p_ontrack", "including the clause about ceilings"),
+        ("", "Stalled", "p_stalled", "and what a branch is for"),
+        ("", "Worse", "p_worse", "and the three things that skip the rule"),
+        ("", "Choosing the measure", "p_choose", "instrument, diary or goal scale"),
+        ("", "Writing a goal scale", "p_goal", "in four steps, worked"),
+        ("", "What you may reproduce", "p_licence", "instrument by instrument"),
+        ("", "The PHQ-9", "p_phq", "in full, with the item&nbsp;9 rule"),
+        ("", "The GAD-7", "p_gad", "in full, and scoring worked"),
+        ("", "Running a checkpoint", "p_run", "five steps, about three minutes"),
+        ("", "The review script", "p_script", "word for word"),
+        ("", "When it is not good news", "p_words", "two more scripts"),
+        ("", "Plotting it", "p_chart", "one sheet per client"),
+        ("", "Charts that mislead", "p_lies", "three shapes to distrust"),
+        ("", "Short courses", "p_short", "first, middle, last"),
+        ("", "The checkpoint and the note", "p_note", "what to write, what not to"),
+        ("", "When measuring is the wrong move", "p_stop", "four times to put it down"),
+        ("", "Reading an arc spread", "p_reading", "how Part Two is laid out"),
+    ], "toc sm")
+    arcs = '<table class="toc sm">' + '<tr class="part"><td colspan="3">Part Two &middot; '
+    arcs += 'The fifteen arcs</td></tr>'
+    for i, a in enumerate(A.ARCS, 1):
+        ns = A.checkpoints(a["key"])
+        arcs += (f'<tr><td><span class="sid">{i:02d}</span>&nbsp;&nbsp;{a["name"]}</td>'
+                 f'<td class="d">{len(ns)} &middot; {", ".join(C.measures(a["key"]))}</td>'
+                 f'<td class="pg">{K.pg("ca" + a["key"].lower())}</td></tr>')
+    arcs += "</table>"
+    three = rows([
+        ("part", "Part Three &middot; Sheets", "", ""),
+        ("", "The chart sheet", "p_sheet1", "one client, one measure, one page"),
+        ("", "The goal-scale sheet", "p_sheet2", "write the item in session"),
+        ("", "The caseload sheet", "p_sheet3", "who is due a reading, and when"),
+        ("", "Scope, referral and sources", "p_scope", ""),
+    ], "toc sm")
     return f"""
 <div class="eyebrow">Start here</div>
 <h2>Contents</h2>
+<p class="lede">Three parts. The method, the fifteen arcs, and three sheets to copy.</p>
 <div class="g2">
-  <div>
-    <h3>Start here</h3>
-    <ul class="toc">
-      {row("p_fits", "What this book answers", "And the four things it does not")}
-      {row("p_problem", "Four months in", "The question this book exists for")}
-      {row("p_anatomy", "What a checkpoint is", "The five parts of one")}
-    </ul>
-    <h3 style="margin-top:12px">Part One &middot; Reading the number</h3>
-    <ul class="toc sm">
-      {row("p_three", "One reading, three ways out", "The rule, whole")}
-      {row("p_ontrack", "On track", "Including the clause about ceilings")}
-      {row("p_stalled", "Stalled", "And what a branch is for")}
-      {row("p_worse", "Worse", "And the three things that skip the rule")}
-      {row("p_choose", "Choosing the measure", "Instrument, diary, or goal scale")}
-      {row("p_goal", "Writing a goal scale", "In four steps, worked")}
-      {row("p_licence", "What you may reproduce", "Instrument by instrument")}
-      {row("p_phq", "The PHQ-9", "Set in full, with the item&nbsp;9 rule")}
-      {row("p_gad", "The GAD-7", "Set in full")}
-      {row("p_run", "Running a checkpoint", "Five steps, about three minutes")}
-      {row("p_script", "The review script", "Word for word")}
-      {row("p_words", "When it is bad news", "Two more scripts")}
-      {row("p_chart", "Plotting it", "One sheet per client")}
-      {row("p_lies", "Charts that mislead", "Three shapes to distrust")}
-      {row("p_short", "Short courses", "First, middle, last")}
-      {row("p_note", "The checkpoint and the note", "What to write, what not to")}
-      {row("p_stop", "When measuring is the wrong move", "Four times to put it down")}
-      {row("p_reading", "Reading an arc spread", "How Part Two is laid out")}
-    </ul>
-  </div>
-  <div>
-    <h3>Part Two &middot; The fifteen arcs</h3>
-    <ul class="toc sm">{arcs}</ul>
-    <h3 style="margin-top:12px">Part Three &middot; Sheets</h3>
-    <ul class="toc sm">
-      {row("p_sheet1", "The chart sheet", "One client, one page")}
-      {row("p_sheet2", "The goal-scale sheet", "Write one in session")}
-      {row("p_sheet3", "The caseload sheet", "Who is due a reading")}
-      {row("p_scope", "Scope, referral and sources", "")}
-    </ul>
-  </div>
+  <div>{left}</div>
+  <div class="stack">{arcs}{three}</div>
 </div>
 """
 
@@ -554,6 +567,9 @@ of the fifteen arcs is the exception. None of them is.</figcaption></figure>
 
 
 def p_licence():
+    # "l1-licence" is a slug, not prose. The US-spelling pass rewrote it to
+    # "l1-license" once and silently detached this page from its picture;
+    # inventory.py now fails on a picture named with no file behind it.
     rows = []
     for name in ("PHQ-9", "GAD-7", "PCL-5", "Sleep diary", "Goal scale"):
         m = C.MEASURE[name]
@@ -568,7 +584,7 @@ def p_licence():
 caseload and printing one inside a product you sell are different acts, and several of the
 scales a therapist would reach for first do not permit the second.</p>
 <div class="g46">
-  {K.capt("l1-license", 150, "Five instruments, five different answers to the same question.")}
+  {K.capt("l1-licence", 150, "Five instruments, five different answers to the same question.")}
   <div class="stack">
     <div class="card sage"><h3>Printed in this book</h3><p class="micro">The PHQ-9 and the
     GAD-7, in full, because both carry an explicit statement that no permission is required

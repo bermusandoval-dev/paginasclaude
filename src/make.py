@@ -27,7 +27,8 @@ PHOTOS = os.path.join(ROOT, "assets", "photos", BOOK)
 # (label, argv, books) -- books is None for every book, or a set.
 STEPS = [
     ("fonts      subset Spectral into fonts.css", ["prep_fonts.py"], None),
-    ("photos     fetch the Higgsfield renders", ["fetch_photos.py"], None),
+    ("plates     draw the plates for the photo slots", ["make_plates.py"], {"checkpoints"}),
+    ("photos     fetch the Higgsfield renders", ["fetch_photos.py"], {"routes"}),
     ("build      assemble both HTML files", ["build.py"], None),
     ("fit        measure and resize until nothing clips", ["fit.py"], None),
     ("render     Chrome -> PDF (A4, for the snapshot)", ["render.py", "A4"], {"routes"}),

@@ -89,6 +89,10 @@ def main():
         print("   %s  %s" % (pgn, slug))
     on_disk = {os.path.basename(f)[:-4] for f in glob.glob(os.path.join(ROOT, "assets", "photos", build.BOOK, "*.jpg"))}
     print("generated but not used: %s" % (sorted(on_disk - set(used)) or "none"))
+    missing = sorted(set(used) - on_disk)
+    print("named on a page but not on disk: %s" % (missing or "none"))
+    if missing:
+        raise SystemExit("%d picture(s) referenced with no file behind them" % len(missing))
 
 
 if __name__ == "__main__":
