@@ -567,8 +567,8 @@ be, and how much will the second arc feel familiar to the client?</p>
   <div class="stack">
     <h3>The pairs that share the most</h3>
     {K.table(["Pair", "Shared", "Skills"], rows, "small")}
-    <p class="micro" style="margin-top:6px">{n4} pairs share four skills. {n3} share three, so the {shown3} listed
-    here are examples, not a ranking: look your own combination up in the grid.</p>
+    <p class="micro" style="margin-top:6px">{n4} pairs share four, {n3} share three: the {shown3} threes here are
+    examples, not a ranking. Look your own combination up in the grid.</p>
   </div>
 </div>
 {K.capt("a1-read", 190, "Row for the arc that goes first, column for the one that follows: the cell is the number of reviews the second arc will open with.")}
@@ -576,7 +576,7 @@ be, and how much will the second arc feel familiar to the client?</p>
 Anxiety 40 = 95. Cells: Sleep&ndash;Depression {A.overlap("SLP", "DEP")}, Sleep&ndash;Anxiety {A.overlap("SLP", "ANX")},
 Depression&ndash;Anxiety {A.overlap("DEP", "ANX")}, total {A.overlap("SLP", "DEP") + A.overlap("SLP", "ANX") + A.overlap("DEP", "ANX")}.
 The first two arcs each lose their two ending sessions = 4. Route: 95 &minus; 6 &minus; 4 = {JB["length"]} sessions, which is exactly what page
-{K.pg("ra05")} prints. <b>For three arcs the cells overlap.</b> A skill taught in all three sits in three cells but is only cut twice, so the cell total runs one high for each such skill. Count the shared skills themselves, not the cells. Five of the eight trios in this book are affected.</p></div>
+{K.pg("ra05")} prints. <b>For three arcs the cells overlap:</b> a skill taught in all three sits in three cells but is cut twice, so the total runs one high for each. Count the shared skills, not the cells &mdash; it changes five of the eight trios here.</p></div>
 """
 
 
