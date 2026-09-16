@@ -153,6 +153,9 @@ figcaption b { font-style: normal; font-weight: 600; font-size: 7.6px; letter-sp
 .seq.n2 { grid-template-columns: repeat(2, 1fr); }
 .seq.n3 { grid-template-columns: repeat(3, 1fr); }
 .seq.n4 { grid-template-columns: repeat(4, 1fr); }
+.seq.n5 { grid-template-columns: repeat(5, 1fr); gap: 8px; }
+.seq.n5 h4 { font-size: 12.2px; }
+.seq.n5 .why { font-size: 10.4px; }
 .sc .shot { position: relative; overflow: hidden; background: var(--paper2); }
 .sc .shot img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .sc .tagn { position: absolute; top: 0; left: 0; padding: 4px 8px; font-size: 7.4px; font-weight: 600;
@@ -350,3 +353,74 @@ figcaption b { color: var(--rust); }
 .run.head.h1 { background: #859159; }
 .run.head.h2 { background: #9574AD; }
 .run.head.h3 { background: #7B91B0; }
+
+/* ============================================================ companion 02 ==
+   The Progress Checkpoints. Three colours carry the three outlets everywhere
+   in the book -- sage on track, ochre stalled, rust worse -- so a reader who
+   learns them on page 7 can read any arc page without the key.            */
+
+.sw.on    { background: var(--sage);  border-color: var(--sage); }
+.sw.st    { background: var(--ochre); border-color: var(--ochre); }
+.sw.ws    { background: var(--rust);  border-color: var(--rust); }
+.sw.plain { background: var(--rule);  border-color: var(--rule); }
+
+/* the three outlets, as cards under the decision tree */
+.outlet { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+.outlet > div { padding: 9px 12px 11px; border-top: 2.2px solid var(--ink); background: var(--card); }
+.outlet .t { font-size: 13.4px; font-weight: 600; margin-bottom: 3px; }
+.outlet p { font-size: 10.6px; line-height: 1.46; color: var(--ink2); }
+.outlet .w { border-top-color: var(--rust); }   .outlet .w .t { color: var(--rust); }
+.outlet .s { border-top-color: var(--ochre); }  .outlet .s .t { color: #A07A28; }
+.outlet .o { border-top-color: var(--sage); }   .outlet .o .t { color: var(--sage); }
+
+/* the checkpoint cards of one arc: two across, and an odd third spans the row
+   rather than leaving half of it white */
+.cps { display: grid; grid-template-columns: 1fr 1fr; gap: 11px; }
+.cps > .cp:last-child:nth-child(odd) { grid-column: 1 / -1; }
+.cps > .cp:last-child:nth-child(odd) .outs { grid-template-columns: 1fr 1fr 1fr; gap: 3px 14px; }
+
+/* one checkpoint, as it appears on an arc page */
+.cp { background: var(--card); border: 0.8px solid var(--rule); padding: 8px 11px 9px; }
+.cp .hd { display: flex; align-items: baseline; gap: 8px; margin-bottom: 6px;
+          border-bottom: 0.8px solid var(--rule); padding-bottom: 5px; }
+.cp .n { display: inline-flex; align-items: center; justify-content: center;
+         width: 15px; height: 15px; border-radius: 50%; background: var(--sage);
+         color: var(--paper); font-size: 9.4px; font-weight: 600; flex: none; }
+.cp .s { font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: 0.02em; }
+.cp .m { margin-left: auto; font-size: 8.4px; font-weight: 600; letter-spacing: 0.13em;
+         text-transform: uppercase; color: var(--ink2); }
+.cp .ti { font-size: 11.4px; color: var(--ink2); }
+.cp .ask { font-size: 10.8px; line-height: 1.42; font-style: italic; }
+.cp .outs { display: grid; gap: 3px; margin-top: 6px; font-size: 9.9px; line-height: 1.36; }
+.cp .outs > div { display: grid; grid-template-columns: 13px 1fr; gap: 7px; }
+.cp .outs i { width: 7px; height: 7px; margin-top: 3.5px; border-radius: 50%; display: block; }
+.cp .outs .w i { background: var(--rust); }
+.cp .outs .s i { background: var(--ochre); }
+.cp .outs .o i { background: var(--sage); }
+
+/* a line of script: what you say, and what it is for */
+.says { display: grid; gap: 8px; }
+.says > div { display: grid; grid-template-columns: 62px 1fr; gap: 12px; align-items: baseline; }
+.says .who { font-size: 8px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+             color: var(--ink2); padding-top: 2px; }
+.says q { font-size: 12.6px; line-height: 1.44; font-style: italic; quotes: "\201C" "\201D"; }
+.says .sec { font-variant-numeric: tabular-nums; }
+
+/* a reproduced instrument */
+.form { border: 0.9px solid var(--ink); }
+.form .fh { background: var(--ink); color: var(--paper); padding: 6px 11px; font-size: 9.6px;
+            display: flex; justify-content: space-between; gap: 10px; }
+.form ol { margin: 0; padding: 7px 11px 9px 27px; font-size: 11px; line-height: 1.5; }
+.form li { padding: 1.5px 0; }
+.form li.risk { color: var(--rust); font-weight: 600; }
+.form .ff { border-top: 0.8px solid var(--rule); padding: 6px 11px; font-size: 9.2px; color: var(--ink2); }
+
+/* the worked case strip on an arc's second page */
+.case { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.case > div { border-top: 1.6px solid var(--rule); padding-top: 6px; }
+.case .v { font-size: 20px; line-height: 1; font-variant-numeric: tabular-nums; }
+.case .l { font-size: 9.2px; line-height: 1.36; color: var(--ink2); margin-top: 3px; }
+.case .on { border-top-color: var(--sage); }
+.case .stalled { border-top-color: var(--ochre); }
+.case .worse { border-top-color: var(--rust); }
+.case .none { border-top-style: dashed; }
