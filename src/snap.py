@@ -20,7 +20,7 @@ import build  # noqa: E402
 def main():
     build.numbers()
     pno = build.K.PAGENO["ra05"] - 1
-    pdf = os.path.join(ROOT, "out", "Session-Arc-The-Combined-Routes-A4.pdf")
+    pdf = build.pdf_path("A4")
     doc = pymupdf.open(pdf)
     page = doc[pno]
     mx, my = (210 - 175) / 2 * MM, (297 - 236) / 2 * MM

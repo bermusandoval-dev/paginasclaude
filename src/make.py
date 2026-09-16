@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
-"""Build The Combined Routes end to end, and refuse to lie about the result.
+"""Build one book end to end, and refuse to lie about the result.
 
-    python src/make.py            full build, then every check
-    python src/make.py --checks   checks only, against whatever is in out/
+    python src/make.py                       full build, then every check
+    python src/make.py --checks              checks only, against out/
+    python src/make.py --book checkpoints    the other book
 
 The order is not arbitrary. The fitter measures real pages in Chrome, so the
 photographs have to be on disk before it runs; and page 15 shows a picture of
@@ -14,28 +15,30 @@ import subprocess
 import sys
 import time
 
+if "--book" in sys.argv:
+    os.environ["BOOK"] = sys.argv[sys.argv.index("--book") + 1]
+BOOK = os.environ.get("BOOK", "routes")
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 PHOTOS = os.path.join(ROOT, "assets", "photos")
 
-# (label, argv, needs_photos)
+# (label, argv, books) -- books is None for every book, or a set.
 STEPS = [
-    ("fonts      subset Spectral into fonts.css", ["prep_fonts.py"], False),
-    ("photos     fetch the Higgsfield renders", ["fetch_photos.py"], False),
-    ("build      assemble both HTML files", ["build.py"], True),
-    ("fit        measure and resize until nothing clips", ["fit.py"], True),
-    ("render     Chrome -> PDF (A4, for the snapshot)", ["render.py", "A4"], True),
-    ("snap       photograph route 05 out of that PDF", ["snap.py"], True),
-    ("build      reassemble, now with the snapshot", ["build.py"], True),
-    ("fit        refit", ["fit.py"], True),
-    ("render     Chrome -> PDF (both sizes)", ["render.py"], True),
-    ("finalize   exact page boxes and metadata", ["finalize.py"], True),
+    ("fonts      subset Spectral into fonts.css", ["prep_fonts.py"], None),
+    ("photos     fetch the Higgsfield renders", ["fetch_photos.py"], None),
+    ("build      assemble both HTML files", ["build.py"], None),
+    ("fit        measure and resize until nothing clips", ["fit.py"], None),
+    ("render     Chrome -> PDF (A4, for the snapshot)", ["render.py", "A4"], {"routes"}),
+    ("snap       photograph route 05 out of that PDF", ["snap.py"], {"routes"}),
+    ("build      reassemble, now with the snapshot", ["build.py"], {"routes"}),
+    ("fit        refit", ["fit.py"], {"routes"}),
+    ("render     Chrome -> PDF (both sizes)", ["render.py"], None),
+    ("finalize   exact page boxes and metadata", ["finalize.py"], None),
 ]
 
 CHECKS = [
-    ("routes_text  30 routes agree with the builder", ["routes_text.py"]),
     ("arcs         360 sessions, columns valid", ["arcs.py"]),
-    ("check_figs   every number re-derived a second way", ["check_figs.py"]),
     ("check_glyphs nothing falls outside Spectral", ["check_glyphs.py"]),
     ("check_pdf    fonts, margins, page references", ["check_pdf.py"]),
     ("check_balance no half-empty columns", ["check_balance.py"]),
@@ -46,7 +49,8 @@ CHECKS = [
 
 def run(argv):
     t0 = time.time()
-    p = subprocess.run([sys.executable] + argv, cwd=HERE)
+    env = dict(os.environ, BOOK=BOOK)
+    p = subprocess.run([sys.executable] + argv, cwd=HERE, env=env)
     return p.returncode, time.time() - t0
 
 
@@ -77,14 +81,19 @@ def phase(title, items):
     return failed
 
 
+BOOK_CHECKS = {
+    "routes": [("routes_text  30 routes agree with the builder", ["routes_text.py"]),
+               ("check_figs   every number re-derived a second way", ["check_figs.py"])],
+    "checkpoints": [("check_cp     every checkpoint agrees with the registry", ["check_cp.py"])],
+}
+
+
 def main():
     checks_only = "--checks" in sys.argv
     if not checks_only:
-        n = have_photos()
-        steps = []
-        for label, argv, needs in STEPS:
-            steps.append((label, argv))
-        failed = phase("BUILD", steps)
+        steps = [(label, argv) for label, argv, books in STEPS
+                 if books is None or BOOK in books]
+        failed = phase("BUILD " + BOOK, steps)
         if failed:
             print("\nBUILD INCOMPLETE:")
             for label, why in failed:
@@ -96,7 +105,7 @@ def main():
                 print("   if the egress policy blocks it, no PDF can be produced here.")
             return 1
 
-    failed = phase("CHECKS", CHECKS)
+    failed = phase("CHECKS " + BOOK, CHECKS + BOOK_CHECKS.get(BOOK, []))
     print("\n" + "=" * 68)
     if failed:
         print("%d CHECK(S) FAILED -- do not ship this build:" % len(failed))

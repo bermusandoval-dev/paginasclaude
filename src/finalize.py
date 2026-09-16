@@ -7,14 +7,17 @@ import sys
 
 import pymupdf
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+ROOT = os.path.dirname(HERE)
 MM = 72.0 / 25.4
 SIZES = {"A4": (210.0, 297.0), "Letter": (215.9, 279.4)}
-NAME = "Session-Arc-The-Combined-Routes"
+
+import build  # noqa: E402
 
 
 def finalize(paper):
-    src = os.path.join(ROOT, "out", "%s-%s.pdf" % (NAME, paper))
+    src = build.pdf_path(paper)
     W, H = SIZES[paper][0] * MM, SIZES[paper][1] * MM
     old = pymupdf.open(src)
     new = pymupdf.open()
@@ -26,9 +29,9 @@ def finalize(paper):
     # Deliberately bland metadata: the file name and properties are what shows
     # in a shared downloads folder or a print queue.
     new.set_metadata({
-        "title": "The Combined Routes",
+        "title": build.TITLE,
         "author": "Sando LLC",
-        "subject": "Session Arc - companion 01",
+        "subject": build.SUBJECT,
         "keywords": "",
         "creator": "Sando LLC",
         "producer": "Sando LLC",

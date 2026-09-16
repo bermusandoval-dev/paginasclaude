@@ -80,7 +80,7 @@ window.addEventListener('load', function () {
 
 
 def main():
-    fitted = os.path.join(ROOT, "out", "routes-A4.html")
+    fitted = build.html_path("A4")
     if os.path.exists(fitted):
         html = io.open(fitted, encoding="utf-8").read()
         print("(measuring the fitted file)")

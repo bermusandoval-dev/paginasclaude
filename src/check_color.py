@@ -17,12 +17,16 @@ import numpy as np
 import pymupdf
 from skimage.color import rgb2lab
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+ROOT = os.path.dirname(HERE)
 C_MIN, L_LO, L_HI = 18.0, 18.0, 94.0
+
+import build  # noqa: E402
 
 
 def main(paper="A4"):
-    pdf = os.path.join(ROOT, "out", "Session-Arc-The-Combined-Routes-%s.pdf" % paper)
+    pdf = build.pdf_path(paper)
     doc = pymupdf.open(pdf)
     tot_px, tot_sat, rows = 0, 0, []
     for p in doc:

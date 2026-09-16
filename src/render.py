@@ -7,12 +7,13 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 from browser import CHROME, FLAGS  # noqa: E402
-NAME = "Session-Arc-The-Combined-Routes"
+
+import build  # noqa: E402
 
 
 def render(paper):
-    src = os.path.join(ROOT, "out", "routes-%s.html" % paper)
-    dst = os.path.join(ROOT, "out", "%s-%s.pdf" % (NAME, paper))
+    src = build.html_path(paper)
+    dst = build.pdf_path(paper)
     if os.path.exists(dst):
         os.remove(dst)
     subprocess.run([CHROME, "--headless", "--disable-gpu", "--no-pdf-header-footer",

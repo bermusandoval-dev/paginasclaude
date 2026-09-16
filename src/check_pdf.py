@@ -31,7 +31,7 @@ def check(paper):
     # cross-reference against an empty dict and reports all of them as
     # unrecorded -- which looks exactly like 29 broken references.
     build.numbers()
-    path = os.path.join(ROOT, "out", "Session-Arc-The-Combined-Routes-%s.pdf" % paper)
+    path = build.pdf_path(paper)
     doc = pymupdf.open(path)
     print("=" * 74)
     print(os.path.basename(path), doc.page_count, "pages, %.2f MB"

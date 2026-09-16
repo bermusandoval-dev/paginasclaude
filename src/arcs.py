@@ -401,13 +401,210 @@ def overlap(a, b):
 REQUIRES = {}
 
 # --- OB2: checkpoints ------------------------------------------------------
-# session -> {"measure": str, "stalled": session, "worse": "B8"}
-# Three or four per arc, on real sessions of that arc. `measure` names the
-# brief scale or the 0-10 goal-attainment item; `stalled` is the session to
-# branch to when the number has not moved; `worse` is always the referral
-# route, never a branch inside the arc.
-#   CHECKPOINT = {48: {"measure": "GAD-7", "stalled": 46, "worse": "B8"}}
-CHECKPOINT = {}
+# session -> {"measure", "goal", "stalled", "worse"}
+# Three or four per arc, on real sessions of that arc.
+#
+#   measure   the named instrument read at this checkpoint, or "Goal scale"
+#             when no instrument may be reproduced for this arc.
+#   goal      the arc's own 0-10 goal-attainment item, always phrased so that
+#             10 is the goal. Instruments keep their own direction; the goal
+#             scale never flips. That one rule removes the commonest charting
+#             error, a line that falls when the client improves.
+#   stalled   the session to branch to when the number has not moved. Usually
+#             earlier in the arc -- the foundation that is missing -- but
+#             sometimes later, when the honest answer is to change tack.
+#   worse     always "B8". A checkpoint never routes deterioration inside the
+#             arc it is measuring.
+CHECKPOINT = {
+    # INT - Intake. Measures fit and engagement, not symptom change: nothing
+    # has been treated yet. The baseline is written at S009.
+    9: {"measure": "Goal scale", "stalled": 8, "worse": "B8",
+        "goal": "How clear are you about what you want to be different by the end? "
+                "0 = no idea, 10 = completely clear."},
+    12: {"measure": "Goal scale", "stalled": 11, "worse": "B8",
+         "goal": "How much of the experiment we agreed did you actually do? "
+                 "0 = none of it, 10 = all of it."},
+    19: {"measure": "Goal scale", "stalled": 16, "worse": "B8",
+         "goal": "How well does the plan we wrote still fit the problem you came with? "
+                 "0 = not at all, 10 = exactly."},
+
+    # EMO - Emotion Regulation
+    26: {"measure": "Goal scale", "stalled": 24, "worse": "B8",
+         "goal": "When the strongest feeling hit this week, how well could you ride it out "
+                 "without acting on it? 0 = not at all, 10 = every time."},
+    32: {"measure": "Goal scale", "stalled": 29, "worse": "B8",
+         "goal": "In the first ten minutes of distress, how often did you use a skill "
+                 "instead of the old move? 0 = never, 10 = every time."},
+    38: {"measure": "Goal scale", "stalled": 37, "worse": "B8",
+         "goal": "Under real pressure this week, how well did the skills hold? "
+                 "0 = they vanished, 10 = they held."},
+
+    # ANX - Anxiety & Avoidance. GAD-7 throughout; S060 exists precisely for
+    # the ladder that stops moving, so the second checkpoint branches to it.
+    50: {"measure": "GAD-7", "stalled": 46, "worse": "B8",
+         "goal": "How often did you approach something anxious instead of avoiding it? "
+                 "0 = never, 10 = every time."},
+    57: {"measure": "GAD-7", "stalled": 60, "worse": "B8",
+         "goal": "On the rungs you tried, how long did you stay until the fear came down? "
+                 "0 = I left straight away, 10 = I stayed until it dropped."},
+    68: {"measure": "GAD-7", "stalled": 72, "worse": "B8",
+         "goal": "How much of your week is still organized around avoiding? "
+                 "0 = all of it, 10 = none of it."},
+    77: {"measure": "GAD-7", "stalled": 74, "worse": "B8",
+         "goal": "How much are you doing what matters even when fear shows up? "
+                 "0 = not at all, 10 = fully."},
+
+    # DEP - Depression & Low Drive. PHQ-9 throughout. Item 9 is why the scope
+    # page exists: any non-zero answer leaves this book for B8.
+    89: {"measure": "PHQ-9", "stalled": 88, "worse": "B8",
+         "goal": "How many of the scheduled actions did you do this week? "
+                 "0 = none, 10 = all of them."},
+    102: {"measure": "PHQ-9", "stalled": 94, "worse": "B8",
+          "goal": "When the hopeless thought came, how well could you act anyway? "
+                  "0 = not at all, 10 = every time."},
+    111: {"measure": "PHQ-9", "stalled": 104, "worse": "B8",
+          "goal": "How much did the old belief about yourself run the week? "
+                  "0 = completely, 10 = not at all."},
+    117: {"measure": "PHQ-9", "stalled": 114, "worse": "B8",
+          "goal": "How much of the week ran on your own routine rather than your mood? "
+                  "0 = none of it, 10 = all of it."},
+
+    # STR - Stress, Burnout & Boundaries. No instrument may be reproduced for
+    # burnout, so the goal scale carries it alone.
+    128: {"measure": "Goal scale", "stalled": 126, "worse": "B8",
+          "goal": "How often did you act on the part of the load you can control? "
+                  "0 = never, 10 = every time."},
+    135: {"measure": "Goal scale", "stalled": 130, "worse": "B8",
+          "goal": "How many times did you hold a limit you had set? "
+                  "0 = none, 10 = every time."},
+    142: {"measure": "Goal scale", "stalled": 143, "worse": "B8",
+          "goal": "How much of your week went to things you actually value? "
+                  "0 = none of it, 10 = most of it."},
+    147: {"measure": "Goal scale", "stalled": 145, "worse": "B8",
+          "goal": "Could you keep this pace up for six months? "
+                  "0 = no chance, 10 = easily."},
+
+    # SW - Self-Worth & Self-Criticism
+    158: {"measure": "Goal scale", "stalled": 153, "worse": "B8",
+          "goal": "When the critic spoke this week, how often did the other voice answer? "
+                  "0 = never, 10 = every time."},
+    164: {"measure": "Goal scale", "stalled": 160, "worse": "B8",
+          "goal": "After a mistake this week, how did you treat yourself? "
+                  "0 = harshly, 10 = as I would treat a friend."},
+    171: {"measure": "Goal scale", "stalled": 162, "worse": "B8",
+          "goal": "How often did you choose what you value over what would win approval? "
+                  "0 = never, 10 = every time."},
+    177: {"measure": "Goal scale", "stalled": 175, "worse": "B8",
+          "goal": "Under stress this week, how loud was the critic? "
+                  "0 = it ran everything, 10 = barely there."},
+
+    # REL - Relationships & Attachment
+    190: {"measure": "Goal scale", "stalled": 187, "worse": "B8",
+          "goal": "How clearly did you ask for what you needed this week? "
+                  "0 = not at all, 10 = clearly, every time."},
+    200: {"measure": "Goal scale", "stalled": 193, "worse": "B8",
+          "goal": "When the old pattern started, how often did you do something different? "
+                  "0 = never, 10 = every time."},
+    210: {"measure": "Goal scale", "stalled": 205, "worse": "B8",
+          "goal": "How well did you stay yourself around the people who pull hardest? "
+                  "0 = I disappeared, 10 = I stayed."},
+    217: {"measure": "Goal scale", "stalled": 215, "worse": "B8",
+          "goal": "How different is the map from the one we drew in the first session? "
+                  "0 = identical, 10 = changed."},
+
+    # TRA - Trauma-Informed Groundwork. PCL-5 is public domain. This arc is
+    # stabilization, so a rising score is the signal the book cares about most.
+    228: {"measure": "PCL-5", "stalled": 224, "worse": "B8",
+          "goal": "When a reminder hit this week, how well could you bring yourself back "
+                  "to the present? 0 = not at all, 10 = every time."},
+    234: {"measure": "PCL-5", "stalled": 229, "worse": "B8",
+          "goal": "How much of your ordinary week felt steady? "
+                  "0 = none of it, 10 = most of it."},
+    238: {"measure": "PCL-5", "stalled": 236, "worse": "B8",
+          "goal": "Can you meet a reminder without losing the rest of the day? "
+                  "0 = not at all, 10 = fully."},
+
+    # GRF - Grief, Loss & Transition. The arc page says plainly that a flat
+    # line early in grief is not the same failure it would be in depression.
+    248: {"measure": "Goal scale", "stalled": 244, "worse": "B8",
+          "goal": "Is there room for the loss in your week without it taking the whole week? "
+                  "0 = no room, 10 = enough room."},
+    253: {"measure": "Goal scale", "stalled": 246, "worse": "B8",
+          "goal": "When a wave came, how well could you let it pass? "
+                  "0 = not at all, 10 = every time."},
+    258: {"measure": "Goal scale", "stalled": 254, "worse": "B8",
+          "goal": "How much of ordinary life have you carried the loss into? "
+                  "0 = none of it, 10 = most of it."},
+
+    # CMP - Compulsions, Urges & Habit Loops
+    268: {"measure": "Goal scale", "stalled": 265, "worse": "B8",
+          "goal": "When the urge came, how often did you delay instead of acting? "
+                  "0 = never, 10 = every time."},
+    274: {"measure": "Goal scale", "stalled": 270, "worse": "B8",
+          "goal": "How often did the replacement routine take the place of the old one? "
+                  "0 = never, 10 = every time."},
+    278: {"measure": "Goal scale", "stalled": 275, "worse": "B8",
+          "goal": "In the situations that used to catch you, how often did you stay with "
+                  "the plan? 0 = never, 10 = every time."},
+
+    # VAL - Values, Meaning & Change
+    285: {"measure": "Goal scale", "stalled": 283, "worse": "B8",
+          "goal": "How much of this week pointed at what you say matters? "
+                  "0 = none of it, 10 = most of it."},
+    289: {"measure": "Goal scale", "stalled": 286, "worse": "B8",
+          "goal": "How many of the small experiments did you actually run? "
+                  "0 = none, 10 = all of them."},
+    293: {"measure": "Goal scale", "stalled": 290, "worse": "B8",
+          "goal": "How clear is the direction you are heading in? "
+                  "0 = no idea, 10 = completely clear."},
+
+    # ANG - Anger & Conflict
+    302: {"measure": "Goal scale", "stalled": 299, "worse": "B8",
+          "goal": "When anger rose this week, how often did you catch it early? "
+                  "0 = never, 10 = every time."},
+    306: {"measure": "Goal scale", "stalled": 303, "worse": "B8",
+          "goal": "On the occasions it did get out, how well did you repair afterward? "
+                  "0 = not at all, 10 = fully."},
+    308: {"measure": "Goal scale", "stalled": 305, "worse": "B8",
+          "goal": "How often did conflict this week end without escalating? "
+                  "0 = never, 10 = every time."},
+
+    # SLP - Sleep, Body & Energy. The instrument here is the client's own
+    # diary from S312: sleep efficiency is a real number, free, and already
+    # being collected by the arc.
+    316: {"measure": "Sleep diary", "stalled": 313, "worse": "B8",
+          "goal": "Averaged over the week, how rested did you feel on waking? "
+                  "0 = wrecked, 10 = rested."},
+    320: {"measure": "Sleep diary", "stalled": 315, "worse": "B8",
+          "goal": "How many nights did you keep to the wind-down and the window? "
+                  "0 = none, 10 = every night."},
+    323: {"measure": "Sleep diary", "stalled": 321, "worse": "B8",
+          "goal": "When a night goes wrong now, how well do you handle the next day? "
+                  "0 = it wrecks it, 10 = it barely dents it."},
+
+    # WRK - Work, Money & Purpose
+    331: {"measure": "Goal scale", "stalled": 329, "worse": "B8",
+          "goal": "How well does your working week fit the person you actually are? "
+                  "0 = not at all, 10 = closely."},
+    335: {"measure": "Goal scale", "stalled": 330, "worse": "B8",
+          "goal": "How clearly did you say what you needed at work? "
+                  "0 = not at all, 10 = clearly."},
+    338: {"measure": "Goal scale", "stalled": 333, "worse": "B8",
+          "goal": "How much of the work pressure do you now have a plan for? "
+                  "0 = none of it, 10 = all of it."},
+
+    # PRG - Progress, Relapse Prevention & Ending. Keeps whichever instrument
+    # ran through treatment, so the last reading is comparable to the first.
+    346: {"measure": "Treatment scale", "stalled": 345, "worse": "B8",
+          "goal": "With sessions further apart, how well did the skills hold? "
+                  "0 = they went, 10 = they held."},
+    352: {"measure": "Treatment scale", "stalled": 348, "worse": "B8",
+          "goal": "How much is still unfinished between us? "
+                  "0 = a great deal, 10 = nothing."},
+    358: {"measure": "Treatment scale", "stalled": 354, "worse": "B8",
+          "goal": "How ready do you feel to do this without me? "
+                  "0 = not at all, 10 = ready."},
+}
 
 # --- OB3: re-entry blocks --------------------------------------------------
 # A detour returns the client to the start of the block they were in, so the
@@ -446,6 +643,13 @@ def blocks(key):
         cuts.append((chr(65 + len(cuts)), a["start"] + i, a["start"] + i + take - 1))
         i += take
     return cuts
+
+
+def checkpoints(key):
+    """The checkpoint sessions of one arc, in order."""
+    a = BY_KEY[key]
+    lo, hi = a["start"], a["start"] + len(a["sessions"]) - 1
+    return sorted(n for n in CHECKPOINT if lo <= n <= hi)
 
 
 def block_of(n):
@@ -505,14 +709,30 @@ def _check_columns():
     seen = {}
     for n, cp in CHECKPOINT.items():
         key = arc_of(n)
+        a = BY_KEY[key]
         _text(cp, "measure", n)
+        _text(cp, "goal", n)
+        # Every goal item is written so that 10 is the goal. A scale that runs
+        # the other way draws a chart that falls as the client improves, and
+        # the whole book reads that line as deterioration.
+        assert "0 = " in cp["goal"] and "10 = " in cp["goal"], \
+            ("CHECKPOINT goal must anchor both 0 and 10", n)
         st = cp.get("stalled")
         assert arc_of(st) == key, ("CHECKPOINT stalled leaves the arc", n, st)
         assert st != n, ("CHECKPOINT stalls on itself", n)
         assert cp.get("worse") == "B8", ("CHECKPOINT worse must route to B8", n)
+        # A checkpoint asks "is this working?", so it cannot sit on -- or send
+        # the client to -- a session whose whole job is to end the arc.
+        for m, what in ((n, "sits on"), (st, "branches to")):
+            assert a["sessions"][m - a["start"]][1] != "CLOSE", \
+                ("CHECKPOINT %s a closing session" % what, n, m)
+        assert n > a["start"], ("CHECKPOINT on the arc's first session", n)
         seen[key] = seen.get(key, 0) + 1
     for key, count in seen.items():
         assert 3 <= count <= 4, ("CHECKPOINT wants 3 or 4 per arc", key, count)
+    if CHECKPOINT:
+        missing = [a["key"] for a in ARCS if a["key"] not in seen]
+        assert not missing, ("arcs with no checkpoints", missing)
 
     for a in ARCS:
         first, last = span[a["key"]]

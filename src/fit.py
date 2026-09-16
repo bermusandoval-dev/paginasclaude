@@ -223,7 +223,7 @@ def run(rounds=9):
         html = build.build(paper, pages)
         if html.count("<div") != html.count("</div>"):
             raise SystemExit("unbalanced divs in " + paper)
-        path = os.path.join(ROOT, "out", "routes-%s.html" % paper)
+        path = build.html_path(paper)
         with open(path, "w", encoding="utf-8") as fh:
             fh.write(html)
         print("wrote %s (%.0f KB)" % (os.path.basename(path), len(html) / 1024))
