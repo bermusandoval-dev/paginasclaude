@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+out/*.html
+out/*.pdf
+out/_*.jpg
+out/_*.log
+fonts/fonts.css
