@@ -6,7 +6,7 @@ import subprocess
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-CHROME = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
+from browser import CHROME, FLAGS  # noqa: E402
 NAME = "Session-Arc-The-Combined-Routes"
 
 
@@ -17,8 +17,8 @@ def render(paper):
         os.remove(dst)
     subprocess.run([CHROME, "--headless", "--disable-gpu", "--no-pdf-header-footer",
                     "--run-all-compositor-stages-before-draw",
-                    "--virtual-time-budget=30000", "--print-to-pdf=" + dst,
-                    "file:///" + src.replace("\\", "/")], capture_output=True)
+                    "--virtual-time-budget=30000", "--print-to-pdf=" + dst, *FLAGS,
+                    "file:///" + src.replace("\\", "/").lstrip("/")], capture_output=True)
     if not os.path.exists(dst):
         raise SystemExit("chrome produced nothing for " + paper)
     import pymupdf

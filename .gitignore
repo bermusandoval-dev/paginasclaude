@@ -5,3 +5,5 @@ out/*.pdf
 out/_*.jpg
 out/_*.log
 fonts/fonts.css
+fonts/ttf/*.ttf
+assets/photos/*.jpg
