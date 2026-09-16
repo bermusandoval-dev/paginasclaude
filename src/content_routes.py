@@ -111,6 +111,12 @@ def page_b(r):
                 cuts.append("S%03d (ending)" % it["n"])
         cutline = ('<div class="runfoot"><span><b style="font-weight:600;color:#173C42">Cut from this route:</b> '
                    + ", ".join(cuts) + "</span></div>")
+    # The footnote that explains the "+ Sxxx" marker has to name a session that
+    # is actually on this page. One hardcoded example put a Sleep session on the
+    # 26 routes that carry no Sleep arc.
+    revs = sorted({x for it in b["items"] for x in it["reviews"]})
+    reviewnote = ("<span>&ldquo;+ S%03d&rdquo;: open with a ten-minute review of "
+                  "that session&rsquo;s skill.</span>" % revs[0]) if revs else ""
     cols = 3 if len(rows) > 44 else 2
     per = math.ceil(len(rows) / cols)
     return f"""<div class="rpage">
@@ -122,7 +128,7 @@ def page_b(r):
 <div class="runlist" style="grid-template-columns:repeat({cols},1fr);grid-template-rows:repeat({per},auto);align-content:stretch">{"".join(rows)}</div>
 {cutline}<div class="runfoot"><span><span class="cbx"></span>Tick when done.</span>
 <span>Cut sessions are grey: &ldquo;see&rdquo; names the session that already taught the skill.</span>
-<span>&ldquo;+ S319&rdquo;: open with a ten-minute review of that session&rsquo;s skill.</span></div>
+{reviewnote}</div>
 <div><h3>Watch for on this route</h3><div class="watch">{watch}</div></div>
 </div>"""
 

@@ -539,6 +539,13 @@ def p_atlas_read():
     rows = [[f'{A.BY_KEY[a]["short"]} + {A.BY_KEY[b]["short"]}', f'<b>{v}</b>',
              ", ".join(A.MODULES[m] for m in sorted(A.modules(a) & A.modules(b)))] for v, a, b in top]
     zero = [(a, b) for i, a in enumerate(A.COMBINABLE) for b in A.COMBINABLE[i + 1:] if A.overlap(a, b) == 0]
+    # Ten pairs tie on three. Calling any five of them "the five that share the
+    # most" invents a ranking, so the table says how many it is leaving out.
+    n4 = sum(1 for v, a, b in ((A.overlap(a, b), a, b) for i, a in enumerate(A.COMBINABLE)
+                               for b in A.COMBINABLE[i + 1:]) if v == 4)
+    n3 = sum(1 for v, a, b in ((A.overlap(a, b), a, b) for i, a in enumerate(A.COMBINABLE)
+                               for b in A.COMBINABLE[i + 1:]) if v == 3)
+    shown3 = sum(1 for v, a, b in top if v == 3)
     return f"""
 <div class="eyebrow">Part Two &middot; what the numbers tell you</div>
 <h2>Reading the atlas</h2>
@@ -558,8 +565,10 @@ be, and how much will the second arc feel familiar to the client?</p>
     folded ending: that is the route length before you open a single page.</p>
   </div>
   <div class="stack">
-    <h3>The five pairs that share the most</h3>
+    <h3>The pairs that share the most</h3>
     {K.table(["Pair", "Shared", "Skills"], rows, "small")}
+    <p class="micro" style="margin-top:6px">{n4} pairs share four skills. {n3} share three, so the {shown3} listed
+    here are examples, not a ranking: look your own combination up in the grid.</p>
   </div>
 </div>
 {K.capt("a1-read", 190, "Row for the arc that goes first, column for the one that follows: the cell is the number of reviews the second arc will open with.")}
@@ -567,7 +576,7 @@ be, and how much will the second arc feel familiar to the client?</p>
 Anxiety 40 = 95. Cells: Sleep&ndash;Depression {A.overlap("SLP", "DEP")}, Sleep&ndash;Anxiety {A.overlap("SLP", "ANX")},
 Depression&ndash;Anxiety {A.overlap("DEP", "ANX")}, total {A.overlap("SLP", "DEP") + A.overlap("SLP", "ANX") + A.overlap("DEP", "ANX")}.
 The first two arcs each lose their two ending sessions = 4. Route: 95 &minus; 6 &minus; 4 = {JB["length"]} sessions, which is exactly what page
-{K.pg("ra05")} prints. For three arcs, check that no skill is counted in two cells.</p></div>
+{K.pg("ra05")} prints. <b>For three arcs the cells overlap.</b> A skill taught in all three sits in three cells but is only cut twice, so the cell total runs one high for each such skill. Count the shared skills themselves, not the cells. Five of the eight trios in this book are affected.</p></div>
 """
 
 
@@ -697,9 +706,11 @@ def p_scope():
   <div class="stack"><h3>Sources</h3>
     <p class="small">Kessler RC, Chiu WT, Demler O, Walters EE. Prevalence, severity, and comorbidity of 12-month
     DSM-IV disorders in the National Comorbidity Survey Replication. <i>Archives of General Psychiatry</i> 2005;62:617&ndash;627.
-    Among adults with a disorder in the past year, close to half met criteria for two or more.</p>
-    <p class="small" style="margin:0"><b>What it does not say:</b> it measures how often problems occur together.
-    It does not say in which order to treat them.</p></div>
+    Among adults with a disorder in the past year, 55% had one diagnosis, 22% two and 23% three or more: close to
+    half met criteria for two or more. The same paper found severity concentrated in that comorbid minority.</p>
+    <p class="small" style="margin:0"><b>Two things it does not say:</b> it measures how often problems occur
+    together, not in which order to treat them; and it is a community household survey, not a clinical sample, so a
+    caseload looks more tangled than these figures, not less.</p></div>
   <div class="stack"><h3>What is craft, not evidence</h3>
     <p class="small">The seven ordering rules, the layer ladder, the override and the seam wording are clinical
     conventions written for consistency. They reflect a common sequence in practice &mdash; stabilize, restore basics,
