@@ -31,6 +31,7 @@ def after(h, pos, limit=460):
     seg = h[pos:pos + limit]
     for pat in (r"<h4[^>]*>(.*?)</h4>\s*<p class=\"why\">(.*?)</p>",
                 r"<figcaption>(.*?)</figcaption>",
+                r"<div class=\"cap\">(.*?)</div>",
                 r"<h4[^>]*>(.*?)</h4>"):
         m = re.search(pat, seg, re.S)
         if m:
@@ -86,7 +87,7 @@ def main():
     print("pictures with nothing printed beside them: %d" % len(mute))
     for pgn, slug in mute:
         print("   %s  %s" % (pgn, slug))
-    on_disk = {os.path.basename(f)[:-4] for f in glob.glob(os.path.join(ROOT, "assets", "photos", "*.jpg"))}
+    on_disk = {os.path.basename(f)[:-4] for f in glob.glob(os.path.join(ROOT, "assets", "photos", build.BOOK, "*.jpg"))}
     print("generated but not used: %s" % (sorted(on_disk - set(used)) or "none"))
 
 

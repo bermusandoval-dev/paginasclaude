@@ -6,9 +6,9 @@ branch arrow comes out of arcs.CHECKPOINT and checkpoints.py, so a chart that
 disagrees with the page beside it is a bug the checker can catch rather than a
 proofreading job.
 
-The three outlets keep one colour each throughout the whole book -- sage for on
+The three outlets keep one color each throughout the whole book -- sage for on
 track, ochre for stalled, rust for worse -- and nothing else in the book is
-allowed those three colours.
+allowed those three colors.
 """
 import arcs as A
 import checkpoints as C
@@ -16,6 +16,11 @@ import kit as K
 
 ON, STALL, WORSE = K.SAGE, K.OCHRE, K.RUST
 VCOL = {"on": ON, "stalled": STALL, "worse": WORSE}
+
+# The bands on an arc timeline: (colour, opacity). The opacities are the point
+# -- below roughly 0.6 these accents wash out to under the chroma the colour
+# budget counts, and the page goes grey while the stylesheet still says sage.
+BAND = [(K.SAGE_L, 0.80), (K.PLUM_L, 0.80)]
 
 
 def _svg(inner, x, y, w, h, cls="fig"):
@@ -30,7 +35,16 @@ def _t(x, y, s, size=8, fill=None, anchor="middle", weight=None):
 
 
 # ------------------------------------------------------------- the arc row ---
-def timeline(key, chip=9.0, gap=2.2):
+# Every timeline is drawn to the same overall width and the same height, so
+# the fifteen arc pages have figures of one size. Only the chips change shape:
+# a fifteen-session arc gets wide ones, a forty-session arc narrow ones. Scaling
+# the whole drawing instead made a short arc's figure two and a half times
+# taller than a long arc's, which clipped four pages and told the reader
+# nothing.
+ROW_W = 446.0
+
+
+def timeline(key, chip=13.0, gap=2.2):
     """One arc, session by session, with its checkpoints and their branches.
 
     Checkpoints sit above the row as numbered discs. The branch a stalled
@@ -40,31 +54,46 @@ def timeline(key, chip=9.0, gap=2.2):
     """
     a = A.BY_KEY[key]
     n = len(a["sessions"])
-    W = n * (chip + gap) - gap
-    TOP, BASE = 34.0, 46.0
+    cw = (ROW_W + gap) / float(n) - gap        # chip width; the height stays 9
+    W = ROW_W
+    TOP, BASE = 34.0, 50.0
     cps = {s: (i, A.CHECKPOINT[s]) for i, s, _x, _g in C.schedule(key)}
     branches = {A.CHECKPOINT[s]["stalled"] for s in cps}
     out = []
 
     def cx(sess):
-        return (sess - a["start"]) * (chip + gap) + chip / 2.0
+        return (sess - a["start"]) * (cw + gap) + cw / 2.0
+
+    # Each checkpoint covers the run of sessions up to and including itself.
+    # Those runs are banded in the same three accents the first book uses for
+    # arc position, at opacities that actually register as colour rather than
+    # as a tint: it shows which sessions a reading is about, and it is most of
+    # what keeps this book off the page as something other than grey.
+    span = {}
+    prev = a["start"]
+    for i, (_o, sess, _x, _g) in enumerate(C.schedule(key)):
+        for m in range(prev, sess + 1):
+            span[m] = i
+        prev = sess + 1
 
     for i, (_title, mod) in enumerate(a["sessions"]):
         sess = a["start"] + i
-        x = i * (chip + gap)
+        x = i * (cw + gap)
         if mod == "CLOSE":
-            out.append(f'<rect x="{x + 0.4:.1f}" y="{TOP + 0.4:.1f}" width="{chip - 0.8:.1f}" '
+            out.append(f'<rect x="{x + 0.4:.1f}" y="{TOP + 0.4:.1f}" width="{cw - 0.8:.1f}" '
                        f'height="{chip - 0.8:.1f}" rx="1.4" fill="none" stroke="{K.INK3}" '
                        f'stroke-width="0.7" stroke-dasharray="1.8 1.4"/>')
-        elif sess in cps:
-            out.append(f'<rect x="{x:.1f}" y="{TOP:.1f}" width="{chip}" height="{chip}" rx="1.4" '
-                       f'fill="{ON}" fill-opacity="0.85"/>')
+            continue
+        if sess in cps:
+            fill, op = K.INK, 1.0
         elif sess in branches:
-            out.append(f'<rect x="{x:.1f}" y="{TOP:.1f}" width="{chip}" height="{chip}" rx="1.4" '
-                       f'fill="{STALL}" fill-opacity="0.75"/>')
+            fill, op = STALL, 1.0
+        elif sess in span:
+            fill, op = BAND[span[sess] % len(BAND)]
         else:
-            out.append(f'<rect x="{x:.1f}" y="{TOP:.1f}" width="{chip}" height="{chip}" rx="1.4" '
-                       f'fill="{K.RULE}"/>')
+            fill, op = K.RULE, 1.0
+        out.append(f'<rect x="{x:.1f}" y="{TOP:.1f}" width="{cw:.1f}" height="{chip}" rx="1.4" '
+                   f'fill="{fill}" fill-opacity="{op:.2f}"/>')
 
     # the branch each stalled reading takes
     for sess, (_ordn, cp) in cps.items():
@@ -81,7 +110,7 @@ def timeline(key, chip=9.0, gap=2.2):
     # the numbered disc above each checkpoint
     for sess, (ordn, _cp) in cps.items():
         x = cx(sess)
-        out.append(f'<path d="M{x:.1f},{TOP - 2:.1f} L{x:.1f},{TOP - 9:.1f}" stroke="{ON}" '
+        out.append(f'<path d="M{x:.1f},{TOP - 2:.1f} L{x:.1f},{TOP - 9:.1f}" stroke="{K.INK}" '
                    f'stroke-width="0.9"/>')
         out.append(f'<circle cx="{x:.1f}" cy="{TOP - 15:.1f}" r="6.2" fill="{ON}"/>')
         out.append(_t(x, TOP - 12.2, ordn, 8.2, K.PAPER, weight="600"))
@@ -91,17 +120,18 @@ def timeline(key, chip=9.0, gap=2.2):
 
 def timeline_key():
     return ('<div class="keyrow">'
-            f'<span class="kk"><i class="sw" style="background:{ON}"></i>Checkpoint</span>'
-            f'<span class="kk"><i class="sw" style="background:{STALL}"></i>Where a stall branches to</span>'
-            f'<span class="kk"><i class="sw" style="background:{K.RULE}"></i>Ordinary session</span>'
-            f'<span class="kk"><i class="sw ghost"></i>The arc&rsquo;s own ending</span>'
+            '<span class="kk"><i class="sw ink"></i>Checkpoint</span>'
+            '<span class="kk"><i class="sw st"></i>Where a stall branches to</span>'
+            '<span class="kk"><i class="sw b1"></i><i class="sw b2"></i>'
+            'The sessions each reading covers</span>'
+            '<span class="kk"><i class="sw cut"></i>The arc&rsquo;s own ending</span>'
             "</div>")
 
 
 # ------------------------------------------------------------- the chart -----
 def chart(key, w=210.0, h=96.0, label=True):
     """The worked case: baseline, then one dot per checkpoint, on the 0-10 goal
-    scale. Dot colour is the verdict, computed, never chosen."""
+    scale. Dot color is the verdict, computed, never chosen."""
     _who, base, rows, _out = C.case(key)
     pts = [(0, base, None)] + [(i, r, v) for i, (_o, _n, r, v, _w) in enumerate(rows, 1)]
     live = [(i, r, v) for i, r, v in pts if r is not None]
@@ -139,6 +169,33 @@ def chart(key, w=210.0, h=96.0, label=True):
         out.append(_t(X(i), Y(r) - 6.2, r, 7.6, K.INK, weight="600"))
         if label:
             out.append(_t(X(i), h - 5, "base" if i == 0 else str(i), 6.8, K.INK3))
+    return _svg(out, 0, 0, w, h)
+
+
+def blankchart(w=300.0, h=104.0, cols=5):
+    """The plotting grid with nothing plotted on it.
+
+    The worksheet used chart("REL") with its labels switched off, which drew a
+    photocopiable sheet carrying one worked case's readings. A blank sheet has
+    to actually be blank.
+    """
+    L, R, T, B = 22.0, 26.0, 15.0, 16.0
+    pw, ph = w - L - R, h - T - B
+    X = lambda i: L + pw * i / float(cols)
+    Y = lambda v: T + ph * (1 - v / 10.0)
+    out = [f'<rect x="{L:.1f}" y="{Y(10):.1f}" width="{pw:.1f}" height="{Y(7) - Y(10):.1f}" '
+           f'fill="{ON}" fill-opacity="0.10"/>']
+    for v in range(0, 11):
+        big = v in (0, 5, 10)
+        out.append(f'<path d="M{L:.1f},{Y(v):.1f} L{L + pw:.1f},{Y(v):.1f}" '
+                   f'stroke="{K.RULE}" stroke-width="{0.7 if big else 0.4}"/>')
+        if big:
+            out.append(_t(L - 4, Y(v) + 2.6, v, 7.4, K.INK3, "end"))
+    out.append(_t(L + pw + 3, Y(8.5) + 2.4, "target", 6.4, K.INK3, "start"))
+    for i in range(cols + 1):
+        out.append(f'<path d="M{X(i):.1f},{T:.1f} L{X(i):.1f},{T + ph:.1f}" '
+                   f'stroke="{K.RULE}" stroke-width="0.5"/>')
+        out.append(_t(X(i), h - 5, "base" if i == 0 else str(i), 6.8, K.INK3))
     return _svg(out, 0, 0, w, h)
 
 
@@ -195,10 +252,10 @@ def tree(w=300.0):
 
 
 # ------------------------------------------------ the whole book at a glance --
-def spread(w=300.0):
+def spread(w=392.0):
     """Where the fifty checkpoints fall, all fifteen arcs stacked and scaled to
     the same width, so the pattern of the schedule is visible in one look."""
-    rowh, lab = 10.4, 76.0
+    rowh, lab = 10.4, 92.0
     keys = [a["key"] for a in A.ARCS]
     h = len(keys) * rowh + 10
     out = []
@@ -222,6 +279,8 @@ def bandbar(name, w=250.0):
     the step that counts as a real change both marked."""
     m = C.MEASURE[name]
     lo, hi = m["range"]
+    # The band names are set in HTML under the bar, not in here: an SVG label
+    # cannot wrap, and five of them across one bar collide at any useful size.
     h = 40.0
     L, R = 2.0, 2.0
     pw = w - L - R
@@ -234,7 +293,10 @@ def bandbar(name, w=250.0):
         op = 0.75 if (blo, bhi, nm) == tgt else 0.10 + 0.06 * i
         out.append(f'<rect x="{x0:.1f}" y="6" width="{max(0.6, x1 - x0):.1f}" height="15" '
                    f'fill="{fill}" fill-opacity="{op:.2f}"/>')
-        out.append(_t((x0 + x1) / 2.0, 30, nm, 6.4, K.INK2))
+        if i:
+            out.append(f'<path d="M{x0:.1f},6 L{x0:.1f},24" stroke="{K.PAPER}" '
+                       f'stroke-width="0.8"/>')
+            out.append(_t(x0, 30, blo, 6.6, K.INK3))
     out.append(f'<rect x="{L:.1f}" y="6" width="{pw:.1f}" height="15" fill="none" '
                f'stroke="{K.INK2}" stroke-width="0.8"/>')
     out.append(_t(X(lo), 3.4, lo, 7, K.INK3, "start"))
@@ -293,13 +355,16 @@ def shortfig(key, w=250.0):
     """The whole schedule against the three readings a short course keeps."""
     ns = A.checkpoints(key)
     keep = set(C.short_course(key))
-    h = 44.0
+    # An arc that reads three times is already the short course. Drawing the
+    # same row twice says "these differ" when they do not.
+    rows = ((13.0, False), (33.0, True)) if len(ns) > 3 else ((16.0, False),)
+    h = 44.0 if len(rows) > 1 else 32.0
     L, R = 10.0, 10.0
     pw = w - L - R
     a = A.BY_KEY[key]
     n = len(a["sessions"])
     out = []
-    for row, (y, only) in enumerate(((13.0, False), (33.0, True))):
+    for row, (y, only) in enumerate(rows):
         out.append(f'<path d="M{L:.1f},{y:.1f} L{L + pw:.1f},{y:.1f}" stroke="{K.RULE}" '
                    f'stroke-width="2.4" stroke-linecap="round"/>')
         for s in ns:

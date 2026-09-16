@@ -363,6 +363,9 @@ figcaption b { color: var(--rust); }
 .sw.st    { background: var(--ochre); border-color: var(--ochre); }
 .sw.ws    { background: var(--rust);  border-color: var(--rust); }
 .sw.plain { background: var(--rule);  border-color: var(--rule); }
+.sw.ink   { background: var(--ink);   border-color: var(--ink); }
+.sw.b1 { background: #A0A97C; border-color: #A0A97C; width: 8px; }
+.sw.b2 { background: #AC92BD; border-color: #AC92BD; width: 8px; }
 
 /* the three outlets, as cards under the decision tree */
 .outlet { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
@@ -381,15 +384,28 @@ figcaption b { color: var(--rust); }
 
 /* one checkpoint, as it appears on an arc page */
 .cp { background: var(--card); border: 0.8px solid var(--rule); padding: 8px 11px 9px; }
-.cp .hd { display: flex; align-items: baseline; gap: 8px; margin-bottom: 6px;
-          border-bottom: 0.8px solid var(--rule); padding-bottom: 5px; }
+/* the header wears the band of the stretch of sessions this reading covers,
+   so a card and the run it belongs to on the timeline above are the same
+   colour. The tints are strong on purpose: anything lighter reads as grey on
+   paper and drops out of the colour budget entirely. */
+.cp .hd { display: flex; align-items: baseline; gap: 8px; margin: -8px -11px 6px;
+          padding: 6px 11px 5px; border-bottom: 0.8px solid rgba(23,60,66,0.16); }
+.cp.base .hd { background: var(--paper2); }
+.cp.base .n { background: none; color: var(--ink2); font-size: 12px; }
+.cp.base .outs i { border: 1px solid var(--ink3); background: none;
+                   width: 6px; height: 6px; margin-top: 4px; }
+.cp.b1 .hd { background: #A0A97C; }
+.cp.b2 .hd { background: #AC92BD; }
+.cp.b1 .n, .cp.b2 .n { background: var(--ink); }
+.cp.b1 .m, .cp.b2 .m { color: var(--ink); }
+.cp.b1 .ti, .cp.b2 .ti, .cp.b1 .s, .cp.b2 .s { color: var(--ink); }
 .cp .n { display: inline-flex; align-items: center; justify-content: center;
          width: 15px; height: 15px; border-radius: 50%; background: var(--sage);
          color: var(--paper); font-size: 9.4px; font-weight: 600; flex: none; }
 .cp .s { font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: 0.02em; }
 .cp .m { margin-left: auto; font-size: 8.4px; font-weight: 600; letter-spacing: 0.13em;
          text-transform: uppercase; color: var(--ink2); }
-.cp .ti { font-size: 11.4px; color: var(--ink2); }
+.cp .ti { font-size: 11.2px; color: var(--ink); }
 .cp .ask { font-size: 10.8px; line-height: 1.42; font-style: italic; }
 .cp .outs { display: grid; gap: 3px; margin-top: 6px; font-size: 9.9px; line-height: 1.36; }
 .cp .outs > div { display: grid; grid-template-columns: 13px 1fr; gap: 7px; }
@@ -416,7 +432,7 @@ figcaption b { color: var(--rust); }
 .form .ff { border-top: 0.8px solid var(--rule); padding: 6px 11px; font-size: 9.2px; color: var(--ink2); }
 
 /* the worked case strip on an arc's second page */
-.case { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.case { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 7px; }
 .case > div { border-top: 1.6px solid var(--rule); padding-top: 6px; }
 .case .v { font-size: 20px; line-height: 1; font-variant-numeric: tabular-nums; }
 .case .l { font-size: 9.2px; line-height: 1.36; color: var(--ink2); margin-top: 3px; }

@@ -11,10 +11,13 @@ to be reported rather than routed around. The sanctioned path is Google Drive:
 the renders are the account holder's own files, and the Drive connector is an
 authorised channel that never touches the blocked host.
 
-    Companion 01   SessionArc/OB1-CombinedRoutes/assets/photos
-    Companion 02   SessionArc/OB2-Checkpoints/assets/photos
+    Companion 01   Drive: "The Combined Routes | OB 1"      -> assets/photos
+    Companion 02   Drive: "The Progress Checkpoints | OB 2"  -> assets/photos
 
-Download them there and drop them into `assets/photos/` under their slug.
+Download them there and drop them into `assets/photos/<book>/` under their slug
+(`routes/` for Companion 01, `checkpoints/` for Companion 02 -- the folders are
+separate because both books wanted a slug called `h0-cover`, and while they
+shared one directory the second book silently printed the first book’s cover).
 `fetch_photos.py` skips any slug already on disk, so the rest of the build runs
 unchanged, and `make.py` fails loudly rather than producing empty frames if any
 are still missing.

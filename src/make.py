@@ -10,6 +10,7 @@ photographs have to be on disk before it runs; and page 15 shows a picture of
 the rendered route 05, so the book is built, rendered, snapped, and then built
 and rendered again with that snapshot in place.
 """
+import json
 import os
 import subprocess
 import sys
@@ -21,7 +22,7 @@ BOOK = os.environ.get("BOOK", "routes")
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
-PHOTOS = os.path.join(ROOT, "assets", "photos")
+PHOTOS = os.path.join(ROOT, "assets", "photos", BOOK)
 
 # (label, argv, books) -- books is None for every book, or a set.
 STEPS = [
@@ -98,11 +99,15 @@ def main():
             print("\nBUILD INCOMPLETE:")
             for label, why in failed:
                 print("   %-52s %s" % (label.split()[0], why))
+            want = len(json.load(open(os.path.join(
+                HERE, {"routes": "jobs.json"}.get(BOOK, "jobs_cp.json")), encoding="utf-8")))
             got = have_photos()
-            if got < 57:
-                print("\n   Only %d of 58 photographs are on disk." % got)
+            if got < want:
+                print("\n   Only %d of %d photographs are in assets/photos/%s."
+                      % (got, want, BOOK))
                 print("   fetch_photos.py needs https://d8j0ntlcm91z4.cloudfront.net;")
-                print("   if the egress policy blocks it, no PDF can be produced here.")
+                print("   if the egress policy blocks it, see src/PHOTOS.md for the")
+                print("   sanctioned route. No PDF should be shipped without them.")
             return 1
 
     failed = phase("CHECKS " + BOOK, CHECKS + BOOK_CHECKS.get(BOOK, []))

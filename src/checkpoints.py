@@ -16,7 +16,7 @@ import arcs as A
 # "free" means the instrument carries an explicit statement that it may be
 # reproduced without permission, or is a work of the United States government
 # and so in the public domain. Everything else is named and linked, never
-# printed: a licence for research use is not a licence to sell inside a PDF.
+# printed: a license for research use is not a license to sell inside a PDF.
 MEASURE = {
     "PHQ-9": {
         "what": "Depression severity, nine items",
@@ -24,7 +24,7 @@ MEASURE = {
         "bands": [(0, 4, "none-minimal"), (5, 9, "mild"), (10, 14, "moderate"),
                   (15, 19, "moderately severe"), (20, 27, "severe")],
         "free": True,
-        "licence": "Carries the statement &ldquo;no permission required to reproduce, "
+        "license": "Carries the statement &ldquo;no permission required to reproduce, "
                    "translate, display or distribute&rdquo;. Reproduced in full on page %s.",
         "source": "Kroenke, Spitzer &amp; Williams (2001), <i>Journal of General Internal "
                   "Medicine</i> 16(9), 606&ndash;613.",
@@ -36,7 +36,7 @@ MEASURE = {
         "bands": [(0, 4, "minimal"), (5, 9, "mild"), (10, 14, "moderate"),
                   (15, 21, "severe")],
         "free": True,
-        "licence": "Carries the same no-permission statement as the PHQ-9. "
+        "license": "Carries the same no-permission statement as the PHQ-9. "
                    "Reproduced in full on page %s.",
         "source": "Spitzer, Kroenke, Williams &amp; L&ouml;we (2006), <i>Archives of "
                   "Internal Medicine</i> 166(10), 1092&ndash;1097.",
@@ -48,7 +48,7 @@ MEASURE = {
         "bands": [(0, 30, "below the provisional cut-point"),
                   (31, 80, "at or above the provisional cut-point")],
         "free": True,
-        "licence": "A work of the United States government and in the public domain. "
+        "license": "A work of the United States government and in the public domain. "
                    "Too long to set here: printed from the National Center for PTSD.",
         "source": "Weathers et al. (2013), National Center for PTSD, ptsd.va.gov.",
         "risk": None,
@@ -58,9 +58,9 @@ MEASURE = {
         "range": (0, 100), "step": 10, "dir": "up",
         "bands": [(0, 74, "low"), (75, 84, "approaching"), (85, 100, "at target")],
         "free": True,
-        "licence": "Not an instrument and not anyone's property: it is the client's own "
+        "license": "Not an instrument and not anyone's property: it is the client's own "
                    "diary from S312, divided one number by another.",
-        "source": "The 85 per cent target is the usual working figure in "
+        "source": "The 85 percent target is the usual working figure in "
                   "cognitive behavioral treatment for insomnia.",
         "risk": None,
     },
@@ -69,7 +69,7 @@ MEASURE = {
         "range": (0, 10), "step": 2, "dir": "up",
         "bands": [(0, 3, "little"), (4, 6, "some"), (7, 10, "most")],
         "free": True,
-        "licence": "Written for this book from the clinical goal of the sessions "
+        "license": "Written for this book from the clinical goal of the sessions "
                    "either side of the checkpoint. Yours to copy, and to reword.",
         "source": "The two-point step is this book's working convention, not a "
                   "psychometric statistic. See page %s.",
@@ -80,7 +80,7 @@ MEASURE = {
         "range": (0, 0), "step": 0, "dir": "down",
         "bands": [],
         "free": True,
-        "licence": "Carries the licence of whichever instrument it is.",
+        "license": "Carries the license of whichever instrument it is.",
         "source": "Its own. The point of the ending arc is that the last reading is "
                   "comparable with the first.",
         "risk": None,

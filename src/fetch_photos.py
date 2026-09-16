@@ -21,9 +21,9 @@ from PIL import Image, ImageDraw
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 ROOT = os.path.dirname(HERE)
-OUT = os.path.join(ROOT, "assets", "photos")
-
 import build  # noqa: E402
+
+OUT = os.path.join(ROOT, "assets", "photos", build.BOOK)
 
 BASE = "https://d8j0ntlcm91z4.cloudfront.net/user_3EwsnulWFHVE3qogFeo0SoaBqmK/hf_%s_%s_%s.png"
 # (manifest, render date, the batch submission stamps to try)

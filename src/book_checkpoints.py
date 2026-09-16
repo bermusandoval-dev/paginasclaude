@@ -55,12 +55,22 @@ PAGES += [
     ("hero", C.p_back, None, None),
 ]
 
+# check_pdf verifies each "page NN" lands on a page containing these words. Two
+# rules follow from how it looks: it lowercases the page text, so every phrase
+# here is lowercase; and an h3 is set as letter-spaced small caps that extracts
+# as "I T H E L D, AT TA R G E T", so every phrase is body text, never a
+# heading.
 XREF_PHRASES = {
     "p_three": "three ways out",
-    "p_ontrack": "holding at target",
-    "p_worse": "three things that skip",
+    "p_ontrack": "target band",
+    "p_worse": "in the wrong direction",
     "p_goal": "writing a goal scale",
     "p_licence": "what you may reproduce",
     "p_phq": "item 9",
-    "p_sheet1": "the chart sheet",
+    "p_sheet1": "the first column is the baseline",
+    "p_choose": "three questions, in this order",
+    "p_words": "doing real work",
+    "p_gad": "four points is the figure",
+    "p_sheet3": "one line per client",
+    "p_fits": "screening and monitoring",
 }

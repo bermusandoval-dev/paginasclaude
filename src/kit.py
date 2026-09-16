@@ -1,15 +1,23 @@
 # -*- coding: utf-8 -*-
 """Page furniture. A picture never carries a fixed height unless it is a
 photograph; labels live in HTML beside a drawing, not inside it; and every
-photograph has a line of type that says what the page is doing."""
+photograph has a line of type that says what the page is doing.
 
-PHOTO = "../assets/photos/%s.jpg"
+Each book keeps its photographs in its own folder. They shared one until two
+books turned out to want a slug called h0-cover, and the second book quietly
+printed the first book's cover: nothing failed, and the only way to find it was
+to look at the pages."""
+import os
+
+BOOK = os.environ.get("BOOK", "routes")
+PHOTO = "../assets/photos/" + BOOK + "/%s.jpg"
 PAGENO = {}
 
 INK, INK2, INK3 = "#173C42", "#6B7D7E", "#9AA4A2"
 PAPER, PAPER2, CARD, RULE = "#FBF7EF", "#F4EEE3", "#FFFCF6", "#E3DACB"
 RUST, SAGE, PLUM, BLUE, OCHRE = "#B8552F", "#5F7554", "#6F5F80", "#7B91B0", "#D3A44C"
 SAGE_T, PLUM_T, BLUE_T, RUST_T = "#ECEEE4", "#EFEBF2", "#EBEFF4", "#F7EBE3"
+SAGE_L, PLUM_L, RUST_L = "#859159", "#9574AD", "#E5906A"
 POS = [(SAGE, SAGE_T), (PLUM, PLUM_T), (BLUE, BLUE_T)]
 # the filled chips of a route strip: the light accent of each arc position
 POS_FILL = ["#859159", "#9574AD", "#7B91B0"]

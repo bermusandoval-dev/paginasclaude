@@ -79,7 +79,7 @@ def p_fits():
 <div class="eyebrow">Start here</div>
 <h2>What this book <em>answers</em></h2>
 <p class="lede">The Arc Maps say where to go next. They do not say whether you are getting
-there. This book puts a reading at fixed points in every arc, and gives each reading exactly
+there. This book puts a reading at fixed points in every arc, and gives each one exactly
 three ways out.</p>
 <div class="g2">
   <div class="card sage"><h3>It answers</h3><ul class="ticks">
@@ -90,31 +90,28 @@ three ways out.</p>
     <li><span>How do I say all of this to the client in three minutes?</span></li>
   </ul></div>
   <div class="card"><h3>It does not answer</h3><ul class="ticks">
-    <li><span>Whether a client is safe. No checkpoint assesses risk; every one of them
-    hands risk to <b>B8 &middot; Pause &amp; Refer</b> and your local protocol.</span></li>
+    <li><span>Whether a client is safe. No checkpoint assesses risk; all of them hand it to
+    <b>B8 &middot; Pause &amp; Refer</b> and your local protocol.</span></li>
     <li><span>What the diagnosis is. Screening and monitoring are not diagnosis.</span></li>
-    <li><span>Where the client is in the arc &mdash; that is the Client Progress Dashboard.</span></li>
-    <li><span>How to write the note. That is <b>B5</b>; this book gives the number the
-    note quotes.</span></li>
+    <li><span>Where the client is in the arc &mdash; that is the Dashboard.</span></li>
+    <li><span>How to write the note. That is <b>B5</b>.</span></li>
   </ul></div>
 </div>
 <div><h3>How it sits against the rest of the shelf</h3>
 {K.table(["Piece", "Its question", "Where the line falls"], [
-    ["<b>Arc Maps</b>", "Where next?", "They branch on your clinical impression. A checkpoint branches on a number, and names the same kind of session."],
-    ["<b>Companion 01</b><br>The Combined Routes", "Which arc first?", "Routes plans the order at intake. Checkpoints reads what happened afterward, inside whichever arc is running."],
-    ["<b>B5</b> Progress notes", "How do I write it up?", "B5 shapes the note. This book supplies the figure the note cites, and the sentence that explains it."],
-    ["<b>B8</b> Pause &amp; Refer", "Should this stop?", "Every third outlet in this book ends at B8. Nothing here decides a referral; it decides when to go and read that page."],
+    ["<b>Arc Maps</b>", "Where next?", "They branch on your impression. A checkpoint branches on a number, and names the same kind of session."],
+    ["<b>Companion 01</b><br>The Combined Routes", "Which arc first?", "Routes plans the order at intake. Checkpoints reads what happened after, inside whichever arc runs."],
+    ["<b>B5</b> Progress notes", "How do I write it up?", "B5 shapes the note. This book supplies the figure the note cites."],
+    ["<b>B8</b> Pause &amp; Refer", "Should this stop?", "Every third outlet ends at B8. Nothing here decides a referral; it decides when to go and read that page."],
 ])}</div>
 <div class="g3">
-  <div class="card"><h3>If you already measure</h3><p class="micro">You have the harder half
-  done. What this adds is the decision: a step that counts, three outlets, and a named
-  session at the end of the middle one. Keep your instrument and use the schedule.</p></div>
+  <div class="card"><h3>If you already measure</h3><p class="micro">Keep your instrument and
+  take the schedule. What this adds is the decision: a step that counts, three outlets, and a
+  named session at the end of the middle one.</p></div>
   <div class="card"><h3>If you never have</h3><p class="micro">Start with the goal scale and
-  one arc. It is one question, asked three or four times across a course of treatment, and it
-  costs about three minutes each time.</p></div>
-  <div class="card"><h3>If your service requires it</h3><p class="micro">Accredited behavioral
-  health organizations have had to use standardized measures for some years now. This gives
-  you the measure, the schedule and the sentence for the note.</p></div>
+  one arc &mdash; one question, three or four times in a course of treatment.</p></div>
+  <div class="card"><h3>If your service requires it</h3><p class="micro">This gives you the
+  measure, the schedule, and the sentence for the note.</p></div>
 </div>
 <p class="micro">Throughout, a session is named by its number and title &mdash; {sid(WS[0][1])}
 &ldquo;{t(WS[0][1])}&rdquo; &mdash; so the book can be used beside the arcs without
@@ -186,29 +183,27 @@ def p_problem():
   <div class="stack">
     <p class="lede">It is not a failure of attention. It is that nothing in the week asks
     the question in a form that can be answered.</p>
-    <p>Sessions go well or badly. A client arrives lighter, or does not. Six weeks later the
-    impression is of movement, built out of the sessions you remember &mdash; which are the
-    memorable ones. Meanwhile the client has been coming for four months and has begun to
-    wonder the same thing, privately, and will not raise it.</p>
+    <p>Sessions go well or badly. A client arrives lighter, or does not. Six weeks on, the
+    impression is of movement &mdash; built out of the sessions you remember, which are the
+    memorable ones. Meanwhile the client has begun to wonder the same thing, privately, and
+    will not raise it.</p>
     <p>The fix is not more sensitivity. It is a fixed point, agreed in advance, where one
     short question is asked and the answer written down. Not every session: that turns the
     work into an audit. {tot["checkpoints"]} points across {tot["arcs"]} arcs, between
     {tot["gap_lo"]} and {tot["gap_hi"]} sessions apart.</p>
-    <div class="card line"><p>Two readings are an anecdote. Three are a direction. This
-    book is built to get you to three.</p></div>
+    <div class="card line"><p>Two readings are an anecdote. Three are a direction.</p></div>
   </div>
   <div class="stack">
     {K.capt("c1-months", 168, "Sixteen weeks of sessions, and nothing in the record that answers the question.")}
     <div class="card tint"><h3>What it replaces</h3>
-    <p class="micro">Not your judgement &mdash; your memory. The reading is taken in the
+    <p class="micro">Not your judgment &mdash; your memory. The reading is taken in the
     room, in front of the client, and written where you will both see it next time.</p></div>
   </div>
 </div>
 <figure class="figbox"><div class="figw">{G.spread()}</div>
-<figcaption><b>Every checkpoint in the book</b>Each arc drawn to the same width, so the
-schedule is visible at once; the figure on the right is how many sessions that arc holds.
-Longer arcs get four readings, shorter ones three, and the first never falls on an
-arc&rsquo;s opening session &mdash; there would be nothing to compare it with.</figcaption></figure>
+<figcaption><b>Every checkpoint in the book</b>Each arc drawn to the same width; the figure
+on the right is how many sessions it holds. Longer arcs get four readings, shorter ones
+three.</figcaption></figure>
 """
 
 
@@ -218,9 +213,8 @@ def p_anatomy():
     return f"""
 <div class="eyebrow">Start here</div>
 <h2>What a <em>checkpoint</em> is</h2>
-<p class="lede">Five parts, and all five are fixed before the client arrives. Nothing here
-is decided in the moment, which is the whole point: the decision you make about a stalled
-client should not depend on the kind of day you are having.</p>
+<p class="lede">Five parts, all fixed before the client arrives. That is the point: what you
+decide about a stalled client should not depend on the kind of day you are having.</p>
 <div class="g55">
   <div class="stack">
     {K.legend([
@@ -244,18 +238,15 @@ client should not depend on the kind of day you are having.</p>
   already contains for exactly this.</p></div>
 </div></div>
 <div class="g2">
-  <div><h3>Why these sessions, and not others</h3>
-  <p>Three rules placed all fifty. A checkpoint never sits on an arc&rsquo;s opening session,
-  because there is nothing to compare it with. It never sits on one of the two closing
-  sessions, because an arc that is ending does not branch. And where an arc already contains
-  a natural review &mdash; a session whose own job is to look back &mdash; the checkpoint
-  goes there rather than beside it.</p></div>
+  <div><h3>Why these sessions</h3>
+  <p>Three rules placed all fifty. Never an arc&rsquo;s opening session, with nothing to
+  compare against. Never one of its closing sessions, because an arc that is ending does not
+  branch. And where the arc already holds a review, the checkpoint goes there.</p></div>
   <div><h3>Why three or four, and not eight</h3>
-  <p>Longer arcs get four readings and shorter ones three, which puts them between
-  {C.totals()["gap_lo"]} and {C.totals()["gap_hi"]} sessions apart. Closer together than that
-  and you are reading noise: a single-item scale asked of the same person two weeks running
-  moves a point for reasons that have nothing to do with treatment. Further apart and a
-  stalled arc runs for a month before anyone notices.</p></div>
+  <p>Longer arcs get four readings, shorter ones three, which puts them
+  {C.totals()["gap_lo"]}&ndash;{C.totals()["gap_hi"]} sessions apart. Closer and you read
+  noise: the same person asked two weeks running moves a point for reasons that are nothing
+  to do with treatment. Further apart and a stalled arc runs a month unnoticed.</p></div>
 </div>
 <p class="micro">The branch is what makes these checkpoints yours rather than generic. It is
 not advice in general terms; it is a session number in a book you already own.</p>
@@ -281,15 +272,15 @@ def p_three():
 <div class="eyebrow">Part One &middot; the rule</div>
 <h2>One reading, <em>three ways out</em></h2>
 <p class="lede">Every checkpoint in this book runs the same rule. Learn it here and you can
-read any of the thirty arc pages without looking anything up.</p>
+read any of the {2 * len(A.ARCS)} arc pages without looking anything up.</p>
 <figure class="figbox bare"><div class="figw">{G.tree()}</div></figure>
 {outlets()}
 <div class="g64">
   <div class="stack">
     <div><h3>What a step is</h3>
     <p>Each measure carries its own step, because four points on the GAD-7 and four points
-    on a 0&ndash;10 scale are not the same distance. The steps are printed on page
-    {K.pg("p_licence")} and again beside every instrument. On the goal scale the step is
+    on a 0&ndash;10 scale are not the same distance. They are tabulated on page
+    {K.pg("p_choose")} and repeated beside every instrument. On the goal scale the step is
     <b>two points</b>.</p></div>
     <div><h3>Which reading you compare with</h3>
     <p>Always the one before. Not the baseline &mdash; a client who improved a great deal by
@@ -300,7 +291,7 @@ read any of the thirty arc pages without looking anything up.</p>
   <div class="card ochre"><h3>The rule is a floor, not a ceiling</h3>
   <p class="micro">If the number says on track and everything you can see says otherwise,
   the number is wrong and you are right. Write down what you saw, keep the reading, and
-  read them together next time. What the rule removes is not your judgement; it is the
+  read them together next time. What the rule removes is not your judgment; it is the
   option of never asking.</p></div>
 </div>
 {K.capt("c3-three", 96, "Three ways out, and the arc page names which session each one leads to.")}
@@ -329,21 +320,19 @@ rules forget.</p>
 <div class="g46">
   <div class="stack">
     <div><h3>What you do</h3>
-    <p>Say the number out loud, say which way it went, and go on with the session you had
-    planned. The whole checkpoint should cost you three minutes. An on-track reading is not
-    an occasion for a review of the treatment; it is permission to stop wondering.</p></div>
-    <div class="card line"><p class="micro"><b>Do not celebrate the number.</b> A client who
-    learns that high numbers make you pleased will give you high numbers. Mark it, mean it,
-    and move on.</p></div>
+    <p>Say the number out loud, say which way it went, and carry on with the session you had
+    planned. An on-track reading is not an occasion to review the treatment; it is permission
+    to stop wondering.</p></div>
     <div><h3>What it does not mean</h3>
     <ul class="ticks">
-      <li><span>That the treatment caused it. A good fortnight, a new job and a course of
-      medication all move a reading, and none of them is the arc.</span></li>
-      <li><span>That the client is well. The scale asks about one goal, chosen from two or
-      three sessions, and it is silent about everything else.</span></li>
-      <li><span>That you can stop. On track means carry on, which includes carrying on
-      measuring at the next checkpoint.</span></li>
+      <li><span>That the treatment caused it. A good fortnight, a new job and a change of
+      medication all move a reading.</span></li>
+      <li><span>That the client is well. The item asks about one goal and is silent about
+      everything else.</span></li>
+      <li><span>That you can stop measuring at the next checkpoint.</span></li>
     </ul></div>
+    <div class="card line"><p class="micro"><b>Do not celebrate the number.</b> A client who
+    learns that high numbers please you will give you high numbers.</p></div>
   </div>
   {K.capt("k1-ontrack", 150, "Four readings, each a step better than the last: the shape you are hoping for, and the least interesting one to read.")}
 </div>
@@ -356,21 +345,21 @@ def p_stalled():
     return f"""
 <div class="eyebrow">Part One &middot; outlet two</div>
 <h2><em>Stalled</em></h2>
-<p class="lede">The number moved less than a step, in either direction. This is the outlet
-that earns the book: it is the one that would otherwise be read as &ldquo;early days&rdquo;
-for another two months.</p>
+<p class="lede">The number moved less than a step, either way. This is the outlet that earns
+the book &mdash; the one that would otherwise read as &ldquo;early days&rdquo; for another
+two months.</p>
 <div class="g46">
   {K.capt("k2-stalled", 154, "Four readings that go nowhere. Without a fixed point to read them at, this shape is invisible from inside the work.")}
   <div class="stack">
     <div><h3>What it is not</h3>
-    <p>It is not a verdict on the client, and it is not a signal to work harder at the same
-    thing. A stall almost always means a step was too large, a foundation was skipped, or
-    the arc is treating something the client did not come for.</p></div>
+    <p>Not a verdict on the client, and not a signal to work harder at the same thing. A
+    stall almost always means a step was too large, a foundation was skipped, or the arc is
+    treating something the client did not come for.</p></div>
     <div><h3>What you do: take the named branch</h3>
-    <p>Every checkpoint in Part Two names one session to go to. It is not advice in general
-    terms &mdash; it is a session number. At {sid(n)} in {WA["short"]}, a stalled reading goes
-    to {sid(cp["stalled"])} &ldquo;{t(cp["stalled"])}&rdquo;, which is the session that arc
-    already holds for a ladder that has stopped moving.</p></div>
+    <p>Every checkpoint in Part Two names one session to go to &mdash; not advice, a session
+    number. At {sid(n)} in {WA["short"]}, a stalled reading goes to {sid(cp["stalled"])}
+    &ldquo;{t(cp["stalled"])}&rdquo;, the session that arc already holds for a ladder that
+    has stopped moving.</p></div>
     <div class="card tint"><h3>Then read again, in the same place</h3>
     <p class="micro">Take the branch, and take the next reading at the next scheduled
     checkpoint &mdash; not sooner. Reading again in two weeks to see whether the branch
@@ -379,20 +368,19 @@ for another two months.</p>
 </div>
 <div><h3>Four reasons a number stops moving</h3>
 {K.table(["What happened", "What it looks like", "What to do about it"], [
-  ["<b>The step was too big</b>", "The client can describe the task and has not attempted it, or attempts it once and stops.",
-   "Halve it. This is the commonest single cause, and the branch for most arcs goes to the session that breaks the step down."],
+  ["<b>The step was too big</b>", "They can describe the task and have not attempted it, or tried once and stopped.",
+   "Halve it. The commonest cause by some distance."],
   ["<b>A foundation is missing</b>", "The exercise needs a skill from earlier in the arc that never quite landed.",
-   "The branch is usually that earlier session. Re-teaching it costs one session and saves six."],
-  ["<b>It is the wrong problem</b>", "The client is compliant, pleasant and somewhere else. Homework is done and nothing changes.",
-   "Ask the question in the script on page " + str(K.pg("p_words")) + ". If the answer is another arc, plan it properly rather than drifting."],
+   "Usually where the branch goes. One session to re-teach, six saved."],
+  ["<b>It is the wrong problem</b>", "Compliant, pleasant, and somewhere else. Homework done, nothing changes.",
+   "Ask the question in the script on page " + str(K.pg("p_words")) + "."],
   ["<b>The item is wrong</b>", "The work is plainly going well and only the number is flat.",
-   "Rewrite the goal item and say on the chart that you did. Do not quietly keep two scales."],
+   "Rewrite it, and note on the chart that you did."],
 ])}</div>
 <div><h3>Two stalls in a row</h3>
-<p>A second stalled reading straight after taking the branch is a different thing from the
-first. Two in succession mean the arc is not the problem the client has. Go back to the
-formulation &mdash; and if the client arrived with more than one problem, Companion 01 is
-the book for deciding which arc should have gone first.</p></div>
+<p>A second stalled reading straight after taking the branch means the arc is not the problem
+the client has. Go back to the formulation &mdash; and if they arrived with more than one
+problem, Companion 01 decides which arc should have gone first.</p></div>
 """
 
 
@@ -405,10 +393,10 @@ the plan, today, in this session.</p>
 <div class="g55">
   <div class="stack">
     <div><h3>What you do</h3>
-    <p>Stop planning the arc and open <b>B8 &middot; Pause &amp; Refer</b>. That page, not
-    this one, decides what happens next: it may be a referral, a medical review, a change of
-    level of care, or a conversation that ends with the same arc resuming next week. What
-    this book decides is only that B8 gets opened.</p></div>
+    <p>Stop planning the arc and open <b>B8 &middot; Pause &amp; Refer</b>. That page decides
+    what happens next &mdash; a referral, a medical review, a change in level of care, or a
+    conversation that ends with the same arc resuming next week. All this book decides is
+    that B8 gets opened.</p></div>
     <div class="card rust"><h3>Never branch inside the arc on a worse reading</h3>
     <p class="micro">Not once in the fifty checkpoints does a deteriorating reading send the
     client to another session of the same arc. A client getting worse inside a plan does not
@@ -416,6 +404,9 @@ the plan, today, in this session.</p>
     <div><h3>One reading, not a trend</h3>
     <p>You do not wait for two. A single step in the wrong direction is enough, because the
     cost of opening B8 unnecessarily is a conversation, and the cost of waiting is a month.</p></div>
+    <div class="card line"><p class="micro"><b>Worse is not the same as distressed.</b> A
+    client can have a terrible fortnight and read on track. The outlet follows the number,
+    and where the number and the room disagree, you open B8 and say so there.</p></div>
   </div>
   {K.capt("k3-worse", 168, "A line moving the wrong way. One step is enough; there is nothing to be gained by confirming it.")}
 </div>
@@ -437,34 +428,67 @@ these three is that question, and no number on a chart changes what you do about
 """
 
 
+NAMED = ("PHQ-9", "GAD-7", "PCL-5")
+WORDS = {0: "Zero", 1: "One", 2: "Two", 3: "Three", 4: "Four", 5: "Five",
+         6: "Six", 7: "Seven", 8: "Eight", 9: "Nine", 10: "Ten",
+         11: "Eleven", 12: "Twelve"}
+
+
+def _by_measure():
+    """(arcs with a reproducible instrument, with a diary, on the goal item
+    alone, inheriting whatever ran through treatment). Counted rather than
+    typed: the sentence on the page said four when it was three."""
+    inst, diary, goal, inherit = [], [], [], []
+    for a in A.ARCS:
+        ms = C.measures(a["key"])
+        if any(m in NAMED for m in ms):
+            inst.append(a)
+        elif "Sleep diary" in ms:
+            diary.append(a)
+        elif "Treatment scale" in ms:
+            inherit.append(a)
+        else:
+            goal.append(a)
+    return inst, diary, goal, inherit
+
+
 def p_choose():
+    inst, diary, goal, inherit = _by_measure()
     rows = []
     for name in ("PHQ-9", "GAD-7", "PCL-5", "Sleep diary", "Goal scale"):
         m = C.MEASURE[name]
         who = sorted({a["short"] for a in A.ARCS if name in C.measures(a["key"])})
+        # Naming all ten arcs here spilled the page; the count and the rule are
+        # what a reader needs, and the arcs are listed in the contents anyway.
+        where = ", ".join(who) if len(who) <= 2 else \
+            "the other %s arcs, and beside the instrument in every arc" % WORDS[len(goal)].lower()
         rows.append([f"<b>{name}</b>", m["what"],
                      "%d&ndash;%d" % m["range"] if m["range"][1] else "&mdash;",
-                     str(m["step"]) if m["step"] else "&mdash;",
-                     ", ".join(who) if who else "every arc, alongside"])
+                     str(m["step"]) if m["step"] else "&mdash;", where])
     return f"""
 <div class="eyebrow">Part One &middot; the measure</div>
 <h2>Choosing <em>what to read</em></h2>
-<p class="lede">Three questions, in this order. Most arcs stop at the third, and that is not
-a compromise &mdash; an item written from the goal of the sessions either side of it often
-tracks the work better than a general severity scale does.</p>
+<p class="lede">Three questions, in this order. Most arcs stop at the third, and that is no
+compromise: an item written from the goal of the sessions around it often tracks the work
+better than a general severity scale.</p>
 <div class="g55">
   <div class="stack">
     {K.steps([
-        "<b>Is there an instrument that fits, and may lawfully be reproduced?</b> Four of the fifteen arcs have one. Use it, and use the goal scale beside it.",
-        "<b>Does the arc already collect a number?</b> Sleep does: the diary from S312 gives sleep efficiency, which costs the client nothing extra because they are already keeping it.",
-        "<b>Otherwise, the goal scale alone.</b> Ten of the fifteen arcs run on it, and it is the only measure every arc has. Page " + str(K.pg("p_goal")) + " shows how one is written.",
+        "<b>Is there an instrument that fits, and may lawfully be reproduced?</b> %s arcs &mdash; %s. Use it, and the goal scale beside it."
+        % (WORDS[len(inst)], ", ".join(x["short"] for x in inst)),
+        "<b>Does the arc already collect a number?</b> %s does: the diary from %s gives sleep efficiency, and the client is keeping it anyway."
+        % (diary[0]["short"], sid(diary[0]["start"] + 1)),
+        "<b>Otherwise, the goal scale alone.</b> %s arcs run on it, and it is the only measure every arc has. Page %s writes one."
+        % (WORDS[len(goal)], K.pg("p_goal")),
     ])}
+
     <div class="card ochre"><h3>Never substitute a scale you have not licensed</h3>
     <p class="micro">The obvious instruments for insomnia, compulsions, grief and emotion
-    regulation are all in copyright, and a permission for research is not a permission to
-    print. Page {K.pg("p_licence")} takes them one at a time.</p></div>
+    regulation are in copyright, and a research permission is not a permission to print &mdash;
+    page {K.pg("p_licence")} takes them one at a time. The fifteenth arc,
+    {inherit[0]["short"]}, keeps whatever ran through treatment.</p></div>
   </div>
-  {K.capt("m1-choose", 176, "A long instrument and a single-item card. For ten of the fifteen arcs, the card is the lawful choice and often the better one.")}
+  {K.capt("m1-choose", 176, "A long instrument and a single-item card. For most arcs the card is the lawful choice, and often the better one.")}
 </div>
 <div>{K.table(["Measure", "What it reads", "Range", "Step", "Arcs that use it"], rows)}</div>
 """
@@ -478,7 +502,7 @@ def p_goal():
 <h2>Writing a <em>goal scale</em></h2>
 <p class="lede">A single item, anchored at both ends, that asks about the last week. It takes
 about ninety seconds to write and it is the only measure in this book that carries no
-licence question at all, because you wrote it.</p>
+license question at all, because you wrote it.</p>
 <figure class="figbox"><div class="figw">{G.goalbar()}</div>
 <figcaption><b>Always this way up</b>Ten is the goal, on every scale in this book, in every
 arc. Written the other way round the chart falls as the client improves, and every
@@ -488,7 +512,7 @@ of the fifteen arcs is the exception. None of them is.</figcaption></figure>
   <div class="stack">
     <h3>Four steps</h3>
     {K.steps([
-        "<b>Take the goal from the sessions, not from the diagnosis.</b> Look at what the two or three sessions before the checkpoint actually teach, and ask about that.",
+        "<b>Take the goal from the sessions, not from the diagnosis.</b> Ask about the behavior this stretch of the arc is working on &mdash; either what the sessions just taught, or the target the next ones are about to. Where it is the second, the first reading is simply the baseline for that behavior, and says nothing about the client.",
         "<b>Ask about behavior where you can.</b> &ldquo;How often did you&hellip;&rdquo; beats &ldquo;how anxious were you&hellip;&rdquo;, because the client can count the first and has to estimate the second.",
         "<b>Anchor both ends in words.</b> Not just 0 and 10 &mdash; say what 0 is and what 10 is. An unanchored scale drifts a point a month.",
         "<b>Fix the window: the last week.</b> Not &ldquo;lately&rdquo;, not &ldquo;in general&rdquo;. The window is what makes two readings comparable.",
@@ -498,9 +522,10 @@ of the fifteen arcs is the exception. None of them is.</figcaption></figure>
     <div class="card sage"><div class="eyebrow">Worked, at {sid(n)}</div>
     <p class="quote sm">&ldquo;{cp["goal"]}&rdquo;</p>
     <p class="micro" style="margin-top:7px">Behavior, not feeling. A week-long window. Both
-    ends anchored. And it asks about approach, which is what
-    {sid(WA["start"] + 12)}&ndash;{sid(n)} were for &mdash; not about how anxious he felt,
-    which the GAD-7 beside it already covers.</p></div>
+    ends anchored. It asks about approach &mdash; the thing this whole arc is for &mdash;
+    rather than about how anxious he felt, which the GAD-7 beside it already covers. The
+    same item is read again at {", ".join(sid(x) for x in A.checkpoints(W)[1:])}, so the
+    four readings are comparable with one another.</p></div>
     <div class="card"><h3>Three that will not work</h3>
     <ul class="ticks">
       <li><span><i>&ldquo;How has your week been, 0 to 10?&rdquo;</i> &mdash; reads mood,
@@ -512,11 +537,19 @@ of the fifteen arcs is the exception. None of them is.</figcaption></figure>
     </ul></div>
   </div>
 </div>
-<p class="micro"><b>The two-point step is a working convention of this book, not a
-psychometric statistic.</b> It is set where it is because a one-point move on a
-single-item scale is within the noise of asking the same person twice, and because two
-points is a distance a client can recognise in their own week. Where an arc has an
-instrument, the instrument&rsquo;s own published step governs.</p>
+<div class="g2">
+  <p class="micro"><b>The two-point step is a working convention of this book, not a
+  psychometric statistic.</b> It is set there because a one-point move on a single-item
+  scale is within the noise of asking the same person twice, and because two points is a
+  distance a client can recognize in their own week. Where an arc has an instrument, the
+  instrument&rsquo;s own published step governs.</p>
+  <p class="micro"><b>Two more, written the same way.</b>
+  {A.BY_KEY["SLP"]["short"]}, {sid(A.checkpoints("SLP")[1])}:
+  &ldquo;{A.CHECKPOINT[A.checkpoints("SLP")[1]]["goal"]}&rdquo;
+  &nbsp;&middot;&nbsp; {A.BY_KEY["GRF"]["short"]}, {sid(A.checkpoints("GRF")[0])}:
+  &ldquo;{A.CHECKPOINT[A.checkpoints("GRF")[0]]["goal"]}&rdquo; Both count something;
+  neither asks the client to grade their progress.</p>
+</div>
 """
 
 
@@ -524,11 +557,10 @@ def p_licence():
     rows = []
     for name in ("PHQ-9", "GAD-7", "PCL-5", "Sleep diary", "Goal scale"):
         m = C.MEASURE[name]
-        lic = m["licence"]
-        if "%s" in lic:
-            lic = lic % K.pg("p_phq" if name == "PHQ-9" else
-                             ("p_gad" if name == "GAD-7" else "p_goal"))
-        rows.append([f"<b>{name}</b>", lic, m["source"]])
+        where = {"PHQ-9": "p_phq", "GAD-7": "p_gad"}.get(name, "p_goal")
+        cells = [m["license"], m["source"]]
+        cells = [c % K.pg(where) if "%s" in c else c for c in cells]
+        rows.append([f"<b>{name}</b>"] + cells)
     return f"""
 <div class="eyebrow">Part One &middot; before you copy anything</div>
 <h2>What you may <em>reproduce</em></h2>
@@ -536,7 +568,7 @@ def p_licence():
 caseload and printing one inside a product you sell are different acts, and several of the
 scales a therapist would reach for first do not permit the second.</p>
 <div class="g46">
-  {K.capt("l1-licence", 150, "Five instruments, five different answers to the same question.")}
+  {K.capt("l1-license", 150, "Five instruments, five different answers to the same question.")}
   <div class="stack">
     <div class="card sage"><h3>Printed in this book</h3><p class="micro">The PHQ-9 and the
     GAD-7, in full, because both carry an explicit statement that no permission is required
@@ -545,12 +577,12 @@ scales a therapist would reach for first do not permit the second.</p>
     <div class="card rust"><h3>Named, never printed</h3><p class="micro">Instruments for
     insomnia severity, obsessive&ndash;compulsive symptoms, prolonged grief, emotion
     regulation and burnout are in copyright and are licensed individually &mdash; commonly
-    free for research and not free for commercial redistribution. Where you hold a licence,
+    free for research and not free for commercial redistribution. Where you hold a license,
     use them and read them with the step their own literature gives.</p></div>
   </div>
 </div>
 <div>{K.table(["Measure", "What you may do with it", "Where it comes from"], rows)}</div>
-<div class="scope"><p class="micro"><b>Check before you rely on this.</b> Licence terms
+<div class="scope"><p class="micro"><b>Check before you rely on this.</b> License terms
 change, and they differ by country and by translation. The statements above were correct for
 the English originals at the time of writing; the publisher&rsquo;s own page is the
 authority, not this one.</p></div>
@@ -621,7 +653,7 @@ def p_phq():
     <div class="card tint"><h3>The step: {m["step"]} points</h3><p class="micro">Five points
     is the change commonly treated as clinically meaningful for this instrument. It is a
     published convention rather than a law, and it is larger than most therapists expect.</p></div>
-    {K.photo("q1-phq", 120, "A nine-item form on a clipboard")}
+    {K.capt("q1-phq", 120, "Nine items, four boxes each. Two minutes, and the client fills it in.")}
   </div>
 </div>
 """
@@ -643,15 +675,15 @@ def p_gad():
     <div class="micro" style="display:grid;grid-template-columns:1fr 1fr;gap:2px 10px;margin-top:7px">{bands}</div></div>
   </div>
   <div class="stack">
-    {K.photo("q2-gad", 138, "A seven-item form on a clipboard")}
+    {K.capt("q2-gad", 138, "Two items shorter than the PHQ-9, and a different step. They are not interchangeable.")}
     <div class="card tint"><h3>The step: {m["step"]} points</h3><p class="micro">Four points
     is the figure commonly used for this instrument. Note that it is not the same as the
     PHQ-9&rsquo;s five &mdash; the two scales are different lengths, and a therapist running
     both on one client will get them confused exactly once.</p></div>
     <div class="card ochre"><h3>No risk item, and that is not reassurance</h3>
     <p class="micro">The GAD-7 contains nothing like item 9. It therefore tells you nothing
-    about risk, and a falling GAD-7 is not evidence that a client is safe. Where anxiety and
-    low mood run together, read both instruments.</p></div>
+    about risk, and a falling GAD-7 is not evidence that a client is safe. Risk is asked
+    about on its own terms or not at all.</p></div>
     <div class="card"><h3>Where it is used here</h3><p class="micro">All four checkpoints of
     {A.BY_KEY["ANX"]["name"]}: {", ".join(sid(n) for n in A.checkpoints("ANX"))}, alongside
     the goal item at each one.</p></div>
@@ -708,6 +740,14 @@ end you will run out of time on exactly the weeks the reading matters most.</p>
 
 
 def p_script():
+    # The script is the first checkpoint of the worked example arc, with the
+    # case's own readings in it, so the conversation on this page and the chart
+    # in Part Two are the same event rather than two inventions.
+    _b1 = C.CASE[W][1]
+    _o1, _n1, _r1, _v1, _w1 = C.case(W)[2][0]
+    _d1 = _r1 - _b1
+    # spoken dialogue, so the readings are set as words, not digits
+    _b1, _r1, _d1 = (WORDS[x].lower() for x in (_b1, _r1, _d1))
     return f"""
 <div class="eyebrow">Part One &middot; in the room</div>
 <h2>The <em>three-minute</em> review script</h2>
@@ -717,11 +757,12 @@ a good reading is to stop talking about the measuring and get on with the sessio
   <div class="stack">
     <div class="says">
       <div><span class="who">You</span><q>Before we start &mdash; the same question as last
-      time. {A.CHECKPOINT[WS[1][1]]["goal"]}</q></div>
-      <div><span class="who">Client</span><q>Maybe a six?</q></div>
+      time. {A.CHECKPOINT[_n1]["goal"]}</q></div>
+      <div><span class="who">Client</span><q>Maybe a {_r1}?</q></div>
       <div><span class="who">You</span><q>Put it on here for me.</q></div>
-      <div><span class="who">You</span><q>Last time it was a four. That is two points, which
-      is the amount we agreed would count as a real change rather than a good week.</q></div>
+      <div><span class="who">You</span><q>Last time it was a {_b1}. That is {_d1} points,
+      which is the amount we agreed would count as a real change rather than a good
+      week.</q></div>
       <div><span class="who">Client</span><q>It does not feel like much.</q></div>
       <div><span class="who">You</span><q>It often does not, from inside it. That is most of
       why we write it down &mdash; so that in six weeks you are not relying on how today
@@ -765,9 +806,8 @@ def p_words():
     return f"""
 <div class="eyebrow">Part One &middot; in the room</div>
 <h2>When it is <em>not</em> good news</h2>
-<p class="lede">Both of these conversations go better when the client already knows the rule.
-Say at the first checkpoint that the numbers sometimes stall and that there is a plan for it,
-and neither script arrives as bad news out of nowhere.</p>
+<p class="lede">Both go better when the client already knows the rule. Say at the first
+checkpoint that numbers sometimes stall and that there is a plan for it.</p>
 <div class="g2">
   <div class="card ochre"><div class="eyebrow">A stalled reading</div>
   <div class="says">
@@ -783,7 +823,7 @@ and neither script arrives as bad news out of nowhere.</p>
   <div class="card rust"><div class="eyebrow">A reading that got worse</div>
   <div class="says">
     <div><span class="who">You</span><q>This has gone the other way, by enough that I do not
-    want to just carry on with the plan.</q></div>
+    want to carry on with the plan.</q></div>
     <div><span class="who">You</span><q>I would rather stop and look at the whole picture
     with you than push on and find out in a month. Can we use today for that?</q></div>
     <div><span class="who">Client</span><q>Is that bad?</q></div>
@@ -796,11 +836,23 @@ and neither script arrives as bad news out of nowhere.</p>
   <div class="stack">
     <div><h3>The question inside the stalled script</h3>
     <p>&ldquo;Is this the problem you most want to be working on?&rdquo; is doing real work.
-    A stall is the commonest place to discover that the arc is treating what you formulated
-    and not what they came for. Ask it plainly, once, and be ready for the answer.</p></div>
+    A stall is the commonest place to find that the arc is treating what you formulated
+    rather than what they came for. Ask it plainly, once, and be ready for the answer.</p></div>
     <div class="card line"><p class="micro">Neither script explains the scale again, and
-    neither apologises for it. The measuring is ordinary; treating it as an intrusion is what
+    neither apologizes for it. The measuring is ordinary; treating it as an intrusion is what
     makes it one.</p></div>
+    <div><h3>Three answers to have ready</h3>
+    <ul class="ticks">
+      <li><span><i>&ldquo;So this is not working.&rdquo;</i> &mdash; &ldquo;It means this
+      part is not what shifts it. That is worth knowing in six weeks rather than six
+      months.&rdquo;</span></li>
+      <li><span><i>&ldquo;Are you giving up on me?&rdquo;</i> &mdash; on a worse reading,
+      answer it before it is asked: say plainly that you are not ending anything today, you
+      are looking at the whole picture.</span></li>
+      <li><span><i>&ldquo;Can we just keep going?&rdquo;</i> &mdash; on a stall, yes: the
+      branch is still the arc. On a worse reading, no, because you do not yet know what you
+      would be carrying on with.</span></li>
+    </ul></div>
   </div>
 </div>
 """
@@ -817,7 +869,7 @@ person it belongs to.</p>
   {K.capt("p1-chart", 164, "The next column, marked before the reading is taken. Plotting in front of the client is the step that turns a form into a shared record.")}
   <div class="stack">
     {K.legend([
-        ("One sheet, one measure.&nbsp;", "If the arc reads an instrument as well as the goal scale, use two sheets or two colours, and never one line for both."),
+        ("One sheet, one measure.&nbsp;", "If the arc reads an instrument as well as the goal scale, use two sheets or two colors, and never one line for both."),
         ("Baseline is a column.&nbsp;", "It is not a checkpoint, and it does not get a verdict &mdash; but every first comparison is made against it."),
         ("Write the session number, not the date.&nbsp;", "A client who missed a month should see the reading in the right place in the work, not in the right place in the calendar."),
         ("Note the events.&nbsp;", "A break-up, a bereavement, a new medication, a holiday. Six weeks later the line will not tell you and you will not remember."),
@@ -827,12 +879,25 @@ person it belongs to.</p>
 </div>
 <div class="g2">
   <figure class="figbox bare"><div class="figw">{G.chart("VAL", w=220, h=88)}</div>
-  <figcaption><b>Three readings, all on track</b>Dots take the colour of the verdict, which
+  <figcaption><b>Three readings, all on track</b>Dots take the color of the verdict, which
   is read off the comparison with the dot before, never off the height of the line.</figcaption></figure>
   <figure class="figbox bare"><div class="figw">{G.chart("DEP", w=220, h=88)}</div>
   <figcaption><b>The same sheet, a case that stopped</b>The fourth column has no reading
   because the third one opened B8. An arc that has been paused does not get read again for
   the sake of a complete row.</figcaption></figure>
+</div>
+<div class="g3">
+  <div class="card tint"><h3>Where it lives</h3><p class="micro">With the file, not inside
+  it. The sheet is working paper that comes out at the start of a checkpoint session and goes
+  back afterward; what belongs in the clinical record goes into the record, under your own
+  documentation policy.</p></div>
+  <div class="card tint"><h3>Who else sees it</h3><p class="micro">Say at the first
+  checkpoint who will see the figure &mdash; you, the client, and anyone the client&rsquo;s
+  care or funding involves. A client who finds out later that a payer reads it will give you
+  different numbers from then on.</p></div>
+  <div class="card tint"><h3>If the client wants a copy</h3><p class="micro">Give them one.
+  It is a record of their own work, it costs a photocopy, and the clients who ask are
+  generally the ones for whom seeing the line does the most.</p></div>
 </div>
 """
 
@@ -877,6 +942,10 @@ common, and the first is common enough to be worth watching for by name.</p>
     <div class="card line"><p class="micro">None of these is a reason to stop measuring. They
     are reasons to read the chart beside the notes, which takes a further thirty seconds and
     is the difference between a measure and a ritual.</p></div>
+    <div class="card ochre"><h3>The test that settles most of them</h3>
+    <p class="micro">Ask for one concrete thing from the week that the number refers to. A
+    reading that can produce an example is usually sound; a reading that cannot is measuring
+    the client&rsquo;s impression of themselves, which moves for its own reasons.</p></div>
   </div>
 </div>
 """
@@ -890,7 +959,7 @@ def p_short():
 <div class="eyebrow">Part One &middot; fewer sessions</div>
 <h2><em>Short</em> courses</h2>
 <p class="lede">Session caps are the ordinary case, not the exception: an assistance
-programme allots six or eight, an insurer authorises a block, a client can afford ten. The
+program allots six or eight, an insurer authorizes a block, a client can afford ten. The
 schedule in Part Two assumes the whole arc. Here is what to keep when you do not have it.</p>
 <div class="g55">
   <div class="stack">
@@ -987,8 +1056,8 @@ them all. Here are the four times not to.</p>
   <div class="card line"><h3>1 &middot; When something is happening</h3>
   <p>A client who arrives in the middle of a crisis, a disclosure, or a loss does not get
   handed a scale. Write &ldquo;not taken&rdquo;, deal with what is in the room, and pick the
-  reading up at the next checkpoint. Companion 03 is the book for the session that gets taken
-  over entirely.</p></div>
+  reading up at the next checkpoint. A session taken over from outside is a different problem
+  from a treatment that is not working, and this book is only about the second.</p></div>
   <div class="card line"><h3>2 &middot; When the instrument would be the intervention</h3>
   <p>In some arcs the act of counting changes the thing counted &mdash; urges, checking,
   intrusive thoughts. That is usually useful and occasionally not. If a client is spending
@@ -1032,7 +1101,7 @@ should not need studying.</p>
     <div><h3>The right page &middot; one worked case</h3>
     {K.legend([
         ("The composite.&nbsp;", "Written for this book, not a case record."),
-        ("The chart.&nbsp;", "Baseline and every reading, with each dot coloured by its computed verdict."),
+        ("The chart.&nbsp;", "Baseline and every reading, with each dot colored by its computed verdict."),
         ("Three cautions.&nbsp;", "The ways a true number can still be read wrongly in this particular arc."),
         ("The short course.&nbsp;", "Which three readings to keep when there are not enough sessions."),
     ], cols=1, start=4)}</div>
@@ -1058,7 +1127,7 @@ should not need studying.</p>
   are different for every arc &mdash; grief and anxiety go wrong in opposite
   directions.</p></div>
 </div>
-<p class="micro">Part Two runs in registry order, from {ex["short"]}&rsquo;s neighbours at the
+<p class="micro">Part Two runs in registry order, from {ex["short"]}&rsquo;s neighbors at the
 start to the ending arc last, so an arc&rsquo;s spread sits where that arc sits in the main
 product.</p>
 """
@@ -1098,17 +1167,17 @@ def p_sheet1():
       <div class="field"><span>Measure</span><i></i></div>
       <div class="field"><span>Step that counts</span><i></i></div>
     </div>
-    <div class="card" style="padding:0">{K.photo("w1-sheet", 150, "A blank chart sheet")}</div>
+    {K.capt("w1-sheet", 150, "Kept with the file, not in it: the sheet the client sees.")}
   </div>
   <div class="card tint"><h3>The goal item, written out</h3>
   <div class="lines" style="--n:4"></div>
   <p class="micro" style="margin-top:8px"><b>Both ends anchored, and 10 is the goal.</b>
   Copy it from the arc page, or write your own from page {K.pg("p_goal")}.</p></div>
 </div>
-<div class="figbox"><div class="figw">{G.chart("REL", w=300, h=104, label=False)}</div>
-<figcaption><b>Plot here</b>The columns are baseline and then one per checkpoint. Colour or
-circle each dot as you take the outlet, so the shape of the decision is visible at a glance
-next time.</figcaption></div>
+<div class="figbox"><div class="figw">{G.blankchart(w=300, h=104)}</div>
+<figcaption><b>Plot here</b>The first column is the baseline, then one per checkpoint. Circle
+or color each dot as you take the outlet, so the shape of the decision is visible at a glance
+next time. The shaded band is the target.</figcaption></div>
 <div class="slotrow">{cols}</div>
 <div class="fieldset"><div class="field"><span>What the week held, at each reading</span><i></i></div></div>
 <div class="lines" style="--n:3"></div>
@@ -1142,7 +1211,7 @@ client, in the session where the goal is agreed.</p>
     </div>
   </div>
   <div class="stack">
-    {K.photo("w2-goal", 132, "A blank goal-scale worksheet")}
+    {K.capt("w2-goal", 132, "Three questions and two anchors. About ninety seconds.")}
     <div class="card sage"><h3>Check it against four tests</h3>
     <ul class="ticks">
       <li><span>Does it ask about behavior rather than feeling?</span></li>
@@ -1178,7 +1247,7 @@ chosen, and the sheet does the remembering.</p>
   a caseload and the most worth seeing. Writing the outlet rather than the number is what
   makes it visible at a glance.</p></div>
 </div>
-{K.photo("w3-caseload", 130, "A blank caseload grid")}
+{K.capt("w3-caseload", 130, "One line per client. The third column is the one that does the work.")}
 """
 
 
@@ -1190,7 +1259,7 @@ def p_scope():
   <div class="scope"><h3>Not diagnosis</h3>
   <p>Every measure named here screens or monitors. None of them diagnoses, and a severity
   band is not a label. Where a formal diagnosis matters &mdash; for a referral, a report, an
-  authorisation &mdash; it comes from an assessment, not from a trend on a chart.</p></div>
+  authorization &mdash; it comes from an assessment, not from a trend on a chart.</p></div>
   <div class="scope r"><h3>Not risk assessment</h3>
   <p>No checkpoint assesses risk, and no outlet here manages it. Suicidal thinking, a
   disclosure of abuse and current violence all leave this book immediately for
@@ -1202,7 +1271,7 @@ def p_scope():
   <p class="micro">The branches in Part Two are clinical decisions written as rules. Rules
   are a floor. A recently licensed clinician without regular consultation should treat a
   second stall, and every &ldquo;worse&rdquo; reading, as something to take to a colleague.</p></div>
-  <div class="card"><h3>Not a licence</h3>
+  <div class="card"><h3>Not a license</h3>
   <p class="micro">Two instruments are reproduced here under the permission each one carries,
   and named at their source. Everything else is named and not printed. Terms change and vary
   by country and translation: confirm at the publisher before relying on any of it.</p></div>
@@ -1216,15 +1285,15 @@ def p_scope():
 one of the better supported process changes in psychotherapy, and the benefit falls
 disproportionately on the clients who are not improving &mdash; which is the case this book
 is built around. Two honest qualifications. The research is about feedback systems in
-services, not about this particular set of checkpoints, which has not been trialled. And the
+services, not about this particular set of checkpoints, which has not been tested. And the
 branches in Part Two are conventions of clinical craft, chosen because the arc already
-contains a session for that failure; they are labelled that way throughout and are not
+contains a session for that failure; they are labeled that way throughout and are not
 findings.</p></div>
 <div class="g3">
   <div class="card"><h3>Not validated as a package</h3><p class="micro">The instruments named
-  here have their own literature. This particular schedule &mdash; these sessions, these
-  steps, these branches &mdash; has not been trialled, and is offered as a structure for
-  clinical judgement rather than as an evidence-based protocol in its own right.</p></div>
+  here carry their own literature. This particular schedule does not: it is offered as a
+  structure for clinical judgment, not as an evidence-based protocol in its own right, and
+  the note above says exactly what is and is not claimed for it.</p></div>
   <div class="card"><h3>Not a record system</h3><p class="micro">The sheets in Part Three are
   working paper. Where a reading belongs in the clinical record, it goes into the record
   under your own documentation policy, and the retention and disposal of the sheets are
@@ -1249,7 +1318,7 @@ def p_back():
   <p class="sub" style="max-width:126mm">{tot["checkpoints"]} checkpoints. {tot["arcs"]} arcs.
   Three ways out of every reading, and a named session at the end of each one.</p>
   <div class="facts">
-    <div><div class="v">{len(C.MEASURE) - 1}</div><div class="l">Measures, licence by licence</div></div>
+    <div><div class="v">{len(C.MEASURE) - 1}</div><div class="l">Measures, each with its license stated</div></div>
     <div><div class="v">15</div><div class="l">Worked cases</div></div>
     <div><div class="v">3</div><div class="l">Sheets to copy</div></div>
   </div>

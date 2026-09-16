@@ -28,7 +28,7 @@ def main():
     pix = page.get_pixmap(matrix=pymupdf.Matrix(3, 3), clip=clip)
     img = Image.frombytes("RGB", (pix.width, pix.height), pix.samples)
     img.thumbnail((1400, 1900), Image.LANCZOS)
-    out = os.path.join(ROOT, "assets", "photos", "snap-ra05.jpg")
+    out = os.path.join(ROOT, "assets", "photos", build.BOOK, "snap-ra05.jpg")
     img.save(out, "JPEG", quality=90)
     print("snap from page", pno + 1, img.size)
 

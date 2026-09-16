@@ -415,6 +415,17 @@ REQUIRES = {}
 #             sometimes later, when the honest answer is to change tack.
 #   worse     always "B8". A checkpoint never routes deterioration inside the
 #             arc it is measuring.
+# A stalled reading normally goes BACKWARD, to the foundation that is missing.
+# These three go forward on purpose, because the arc already contains a later
+# session that is the honest answer to that particular stall. They are listed
+# so that a fourth one, arrived at by accident, is caught rather than assumed
+# to be deliberate.
+FORWARD = {
+    57: "the arc's own session for a ladder that has stopped moving",
+    68: "acceptance, when more exposure is not the answer",
+    142: "renegotiating the role, when the load itself has not moved",
+}
+
 CHECKPOINT = {
     # INT - Intake. Measures fit and engagement, not symptom change: nothing
     # has been treated yet. The baseline is written at S009.
@@ -706,7 +717,7 @@ def _check_columns():
             assert arc_of(r) == key, ("REQUIRES crosses arcs", n, r)
             assert r < n, ("REQUIRES points forward", n, r)
 
-    seen = {}
+    seen, branched = {}, set()
     for n, cp in CHECKPOINT.items():
         key = arc_of(n)
         a = BY_KEY[key]
@@ -727,9 +738,22 @@ def _check_columns():
             assert a["sessions"][m - a["start"]][1] != "CLOSE", \
                 ("CHECKPOINT %s a closing session" % what, n, m)
         assert n > a["start"], ("CHECKPOINT on the arc's first session", n)
+        # A branch that lands on another checkpoint reads as "go and take the
+        # reading you already took"; one reused twice in an arc means two
+        # different stalls have been given the same answer without anyone
+        # deciding that they should be.
+        assert st not in CHECKPOINT or arc_of(st) != key, \
+            ("CHECKPOINT branches onto another checkpoint", n, st)
+        assert (st, key) not in branched, ("two checkpoints share a branch", key, st)
+        branched.add((st, key))
+        if st > n:
+            assert n in FORWARD, ("undeclared forward branch", n, st)
         seen[key] = seen.get(key, 0) + 1
     for key, count in seen.items():
         assert 3 <= count <= 4, ("CHECKPOINT wants 3 or 4 per arc", key, count)
+    for n in FORWARD:
+        assert n in CHECKPOINT and CHECKPOINT[n]["stalled"] > n, \
+            ("FORWARD names a branch that does not go forward", n)
     if CHECKPOINT:
         missing = [a["key"] for a in ARCS if a["key"] not in seen]
         assert not missing, ("arcs with no checkpoints", missing)

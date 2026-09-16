@@ -81,7 +81,11 @@ def check(paper):
         print("   nothing closer than 8 mm to an edge")
 
     print("\ncross-references:")
-    texts = [doc[i].get_text().lower() for i in range(doc.page_count)]
+    # Whitespace is normalised before matching: a phrase that happens to
+    # straddle a line break is still the phrase, and leaving it unnormalised
+    # made the checker reject cross-references that were perfectly correct.
+    texts = [re.sub(r"\s+", " ", doc[i].get_text()).lower()
+             for i in range(doc.page_count)]
     refs = set()
     for i, tx in enumerate(texts):
         for m in re.finditer(r"page\s+(\d{1,2})\b", tx):

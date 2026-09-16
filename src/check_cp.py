@@ -163,7 +163,17 @@ def main():
     for p in ("p_worse", "p_scope", "p_phq"):
         claim("B8" in text[p], "%s does not route risk to B8" % p)
 
-    # 9. every page reference resolves to the page it names
+    # 9. no page carries an unsubstituted placeholder. The licence table shipped
+    #    a literal "%s" because one field was formatted and its neighbour was
+    #    not; nothing failed, and the page read "See page %s."
+    for name, txt in text.items():
+        for token in ("%s", "%d", "%r", "{", "}", "&amp;", "object at 0x"):
+            claim(token not in txt, "%s prints a raw %r" % (name, token))
+        # "None of these is a reason" is English; " ... , None " is a bug.
+        claim(not re.search(r"[a-z,;] None\b", txt),
+              "%s prints a None mid-sentence" % name)
+
+    # 10. every page reference resolves to the page it names
     import kit as K
     for name, num in K.PAGENO.items():
         claim(1 <= num <= len(build.PAGES), "page number out of range for " + name)

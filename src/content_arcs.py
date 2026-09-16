@@ -36,10 +36,11 @@ def _next_session(key, n):
 
 def checkpoint_card(key, ordn, n):
     cp = A.CHECKPOINT[n]
+    band = "b%d" % ((ordn - 1) % len(G.BAND) + 1)
     nxt = _next_session(key, n)
     on = ("Stay on the arc: %s &ldquo;%s&rdquo;." % (sid(nxt), title_of(nxt))) if nxt \
         else "Stay on the arc and close it as written."
-    return f"""<div class="cp">
+    return f"""<div class="cp {band}">
   <div class="hd"><span class="n">{ordn}</span><span class="s">{sid(n)}</span>
     <span class="ti">{title_of(n)}</span><span class="m">{cp["measure"]}</span></div>
   <p class="ask">&ldquo;{cp["goal"]}&rdquo;</p>
@@ -62,16 +63,32 @@ def measure_cards(key):
         step = ("A step is <b>%s</b>." % m["step"]) if m["step"] else \
             "Its step is whichever instrument it turns out to be."
         out.append(f'''<div class="card tint"><h3>{name}</h3>
-        <p class="micro">{m["what"]}. {step} {m["licence"].split(".")[0]}.</p></div>''')
+        <p class="micro">{m["what"]}. {step} {m["license"].split(".")[0]}.</p></div>''')
+    out.append(baseline_card(key))
     out.append('''<div class="card rust"><h3>Two stalls in a row</h3>
     <p class="micro">A second stalled reading straight after taking the branch means the arc
     is not the problem the client has. Go back to the formulation before you branch
     again.</p></div>''')
-    out.append('''<div class="card"><h3>The first reading</h3>
-    <p class="micro">Take a baseline at the arc&rsquo;s opening session, using the same item
-    as checkpoint 1. It is not a checkpoint and gets no verdict, but without it the first
-    comparison has nothing to stand on.</p></div>''')
     return "".join(out)
+
+
+def baseline_card(key):
+    """The reading everything else is compared against.
+
+    It sits first among the cards rather than in a footnote, because it is a
+    session the therapist has to do something in, it uses the same item as the
+    first checkpoint, and without it the first comparison has nothing to stand
+    on. It carries no verdict, and saying so is half its job.
+    """
+    a = A.BY_KEY[key]
+    n = a["start"]
+    first = A.checkpoints(key)[0]
+    cp = A.CHECKPOINT[first]
+    return f"""<div class="card tint"><h3>The baseline &middot; {sid(n)}</h3>
+  <p class="micro">Read the checkpoint&nbsp;1 item at {sid(n)}
+  &ldquo;{title_of(n)}&rdquo;, in the words you will use again at {sid(first)}. It gets no
+  verdict &mdash; nothing has happened yet to compare it with &mdash; but without it the
+  first comparison has nothing to stand on.</p></div>"""
 
 
 def page_a(key):
@@ -88,9 +105,9 @@ def page_a(key):
                  "The frame around the fifteen: what is measured here is whether the work has started, not whether it has worked."}</p>
 <figure class="figbox"><div class="figw">{G.timeline(key)}</div>{G.timeline_key()}
 <figcaption><b>{len(a["sessions"])} sessions &middot; {len(sched)} readings &middot; first at
-{sid(sched[0][1])} &middot; {min(gaps)}&ndash;{max(gaps)} sessions apart &middot; reads
-{", ".join(ms).lower()}</b>The ochre squares are the sessions a stalled reading sends the
-client back to, and the dashed arrow shows which checkpoint sends them there.</figcaption></figure>
+{sid(sched[0][1])} &middot; {min(gaps)}&ndash;{max(gaps)} sessions apart &middot;
+{" and ".join(ms)}</b>The ochre squares are the sessions a stalled reading sends the client
+back to, and the dashed arrow shows which checkpoint sends them there.</figcaption></figure>
 <div class="cps">{cards}</div>
 <div class="g{cols}">{measure_cards(key)}</div>
 """
@@ -126,6 +143,14 @@ def page_b(key):
     }
     cf_rows = [[f'<b>{cf[k]}</b>', C.OUTLET[k][0], means[k]]
                for k in ("on", "stalled", "worse") if k in cf]
+    allcp = A.checkpoints(key)
+    shortnote = (
+        "This arc already reads only three times, so a short course keeps all of them. "
+        "With room for two, take %s and %s and say in the note that there is no trend."
+        % (sid(allcp[0]), sid(allcp[-1]))) if len(allcp) == 3 else (
+        "With fewer sessions than the arc, keep the first, the middle and the last: "
+        "%s. The fourth reading, %s, is the one to drop."
+        % (", ".join(sid(n) for n in short), ", ".join(sid(n) for n in allcp if n not in short)))
     cf_note = ("There is no stalled band here at all: the previous reading of %d is already "
                "inside the target band, so anything that has not fallen by a step is on "
                "track. That is the ceiling clause on page %s doing its work."
@@ -151,8 +176,7 @@ def page_b(key):
     <figure class="figbox bare"><div class="figw">{G.chart(key)}</div>{G.chart_key()}</figure>
     <div class="case">{"".join(cells)}</div>
     <figure class="figbox tint"><div class="figw">{G.shortfig(key)}</div>
-    <figcaption><b>Short course</b>Keep the first, the middle and the last:
-    {", ".join(sid(n) for n in short)}.</figcaption></figure>
+    <figcaption><b>Short course</b>{shortnote}</figcaption></figure>
   </div>
 </div>
 <div><h3>What to watch when you read this arc</h3><div class="watch">{watchhtml}</div></div>
